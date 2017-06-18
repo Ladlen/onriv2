@@ -567,9 +567,17 @@ $add_photos = '';
 
 //-----------Provide
 if (isset($_POST['provide'])==true) {
-if (empty($_POST['provide'])) {$add_provide = 'hourly';} else {
-if ($_POST['provide'] == 'hourly') {$add_provide = 'hourly';} else if ($_POST['provide'] == 'daily') {$add_provide = 'daily';} 
-} 
+    if (empty($_POST['provide'])) {
+        $add_provide = 'hourly';
+    } else {
+        if ($_POST['provide'] == 'hourly') {
+            $add_provide = 'hourly';
+        } else if ($_POST['provide'] == 'daily') {
+            $add_provide = 'daily';
+        } else if ($_POST['provide'] == 'daily_interval') {
+            $add_provide = 'daily_interval';
+        }
+    }
 } 
 
 //daily staff
@@ -1148,8 +1156,11 @@ echo'</li>';
 echo '<li class="three">';
 if ($provide_obj == 'hourly') {
 echo '<span title="'.$lang['hourly'].'"><i class="icon-clock-3"></i> '.$lang['hourly'].'</span>';
+} elseif ($provide_obj == 'daily_interval') {
+    echo '<span title="'.$lang['daily_interval'].'"><i class="icon-calendar"></i> '.$lang['daily_interval'].'</span>';
 } else {
-echo '<span title="'.$lang['daily'].'"><i class="icon-calendar"></i> '.$lang['daily'].'</span>';}
+    echo '<span title="'.$lang['daily'].'"><i class="icon-calendar"></i> '.$lang['daily'].'</span>';
+}
 echo '</li>';
 
 
@@ -1377,6 +1388,8 @@ echo '<div class="input_info">
 echo'<label><input type="radio" name="provide" value="hourly" id="hourly"'; if($provide_obj == 'hourly') {echo'checked="checked"';} echo' onclick="switch_provide()" /><span><i class="icon-clock-3"></i>'.$lang['hourly'].'</span></label>';
 
 echo'<label><input type="radio" name="provide" value="daily" id="daily"'; if($provide_obj == 'daily') {echo'checked="checked"';} echo' onclick="switch_provide()" /><span><i class="icon-calendar"></i>'.$lang['daily'].'</span></label>';
+
+echo'<label><input type="radio" name="provide" value="daily_interval" id="daily_interval"'; if($provide_obj == 'daily_interval') {echo'checked="checked"';} echo' onclick="switch_provide()" /><span><i class="icon-calendar"></i>'.$lang['daily_interval'].'</span></label>';
 
 echo'</div>
 <div class="clear"></div>
@@ -2361,9 +2374,10 @@ minusButtonr.innerHTML = \'<span class="minus_item" tabindex="1" onclick="delete
 //=================================/
 
 
+//require_once('object/_daily_interval_form.php');
 
 echo '<div class="input_info" id="daily_provide">
-<div class="input_name">'.$lang['settings'].':<br /><small>'.$lang['daily'].'</small>
+<div class="input_name">'.$lang['settings'].':<br /><small class="daily_type">'.$lang['daily'].'</small>
 <div class="help_obj" tabindex="1"><i class="icon-help-1"></i><div>'.$lang['help_daily'].'</div></div>
 </div>
 <div class="input">';
@@ -2372,7 +2386,7 @@ echo '<div class="input_info" id="daily_provide">
 echo '<table id="d_table" class="units_table"><tbody>';
 
 echo '
-<tr class="current_unit"><th colspan="4" class="th_main_title"><span class="unit_time_title"><i class="icon-calendar"></i>'.$lang['daily'].'</span></th></tr>';
+<tr class="current_unit"><th colspan="4" class="th_main_title"><span class="unit_time_title"><i class="icon-calendar"></i><span class="daily_inteval_caption">'.$lang['daily'].'</span></span></th></tr>';
 echo '
 <tr class="current_unit"><th colspan="4">'.$lang['allow_today'].'</th></tr>';
 
@@ -3128,7 +3142,7 @@ echo '<table id="dt_table" class="units_table"><tbody>';
 
 //----------------- DATE UNIT
 if(empty($custom_date_obj) || empty($date_arr[0])) {
-echo'<tr class="current_unit" id="inp_date1_0"><th colspan="2" class="th_main_title"><span class="unit_time_title"><i class="icon-calendar"></i>'.$lang['date'].'</span><div id="del_dt_0" class="button_area"><span class="minus_item" tabindex="1" onclick="delete_value_dt(0)"><i class="icon-minus-circled"></i></span></div></th></tr>';	
+echo'<tr class="current_unit" id="inp_date1_0"><th colspan="2" class="th_main_title"><span class="unit_time_title"><i class="icon-calendar"></i>'.$lang['date'].'</span><div id="del_dt_0" class="button_area"><span class="minus_item" tabindex="1" onclick="delete_value_dt(0)"><i class="icon-minus-circled"></i></span></div></th></tr>';
 echo '
 <tr class="current_unit" id="inp_date2_0">
 <td class="input_half_td">
@@ -3742,22 +3756,39 @@ echo '
 <script>
 window.onbeforeunload = switch_provide(); 
 function switch_provide() {
-var units_block = document.getElementById(\'units\');
 var radio_daily	= document.getElementById(\'daily\');
-var radio_hourly = document.getElementById(\'hourly\');	
+var radio_hourly = document.getElementById(\'hourly\');
+var radio_daily_interval = document.getElementById(\'daily_interval\');
+
+var units_block = document.getElementById(\'units\');
 var daily_block = document.getElementById(\'daily_provide\');
 //var queue_block	= document.getElementById(\'queue\');
 //var queue_link	= document.getElementById(\'queueb\');
 var link_nav = document.getElementById(\'navunits\');
 daily_block.style.display = \'none\';
-if (radio_daily.checked == true) { 
-units_block.style.display = \'none\'; 
-//queue_block.style.display = \'none\'; 
-//queue_link.style.display = \'none\';
-daily_block.style.display = \'block\';
-link_nav.setAttribute("href","#daily_provide");	
-link_nav.setAttribute("title","'.$lang['settings'].' ('.$lang['daily'].')");
-link_nav.innerHTML = \'<i class="icon-cog"></i>\';
+if (radio_daily.checked == true) {
+
+    units_block.style.display = \'none\';
+    jQuery("#daily_provide .daily_type").text("' . $lang['daily'] . '");
+    jQuery("#daily_provide .daily_inteval_caption").text("' . $lang['daily'] . '");
+    //queue_block.style.display = \'none\';
+    //queue_link.style.display = \'none\';
+    daily_block.style.display = \'block\';
+    link_nav.setAttribute("href","#daily_provide");
+    link_nav.setAttribute("title","'.$lang['settings'].' ('.$lang['daily'].')");
+    link_nav.innerHTML = \'<i class="icon-cog"></i>\';
+
+} else if (radio_daily_interval.checked == true) {
+
+    units_block.style.display = "none";
+    jQuery("#daily_provide .daily_type").text("' . $lang['daily_interval'] . '");
+    jQuery("#daily_provide .daily_inteval_caption").text("' . $lang['daily_interval'] . '");
+    daily_block.style.display = "block";
+    link_nav.setAttribute("href","#daily_provide");
+    link_nav.setAttribute("title","' . $lang['settings'] . ' (' . $lang['daily_interval'] . ')");
+    link_nav.innerHTML = \'<i class="icon-cog"></i>\';
+
+
 } else {
 units_block.style.display = \'block\';
 //queue_block.style.display = \'block\'; 

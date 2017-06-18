@@ -3,9 +3,9 @@ $lang_name = 'English';
 $lang_value = 'en';
 
 $status_arr = array(
-'0'=>'not confirmed', 
-'1'=>'confirmed', 
-'2'=>'paid' 
+'0'=>'not confirmed',
+'1'=>'confirmed',
+'2'=>'paid'
 );
 
 $lang_days = array (
@@ -230,6 +230,7 @@ $lang = array(
 'empty_days_checkbox' => 'Must be at least one day',
 'daily' => 'Daily',
 'hourly' => 'Hourly',
+'daily_interval' => 'Span',
 'provide' => 'Provide',
 'allow_today' => 'Allow orders for the current date?',
 'working_days' => 'Working days in week',
@@ -440,7 +441,7 @@ $lang = array(
 'payment_done' => 'successfully paid',
 'select_only_pay' => 'A compulsory payment',
 'help_only_pay' => 'If this option is enabled, it is possible to make an order without selecting a payment method will be impossible.',
-); 
+);
 
 
 ?>
