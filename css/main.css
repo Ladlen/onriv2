@@ -2783,3 +2783,7 @@ line-height: 0!important;
 visibility: hidden!important;
 float:none!important;
 }
+
+.add_interval {
+    width: 100%;
+}

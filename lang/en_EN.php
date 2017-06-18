@@ -68,6 +68,8 @@ $lang = array(
 'language' => 'Language',
 'yes' => 'Yes',
 'no' => 'No',
+'From:' => 'From:',
+'To:' => 'To:',
 'disabled' => 'Not available',
 'admin_title' => 'Control panel',
 'menu' => 'Menu',
@@ -441,6 +443,7 @@ $lang = array(
 'payment_done' => 'successfully paid',
 'select_only_pay' => 'A compulsory payment',
 'help_only_pay' => 'If this option is enabled, it is possible to make an order without selecting a payment method will be impossible.',
+'add_interval' => 'Add interval',
 );
 
 
