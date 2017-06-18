@@ -2814,13 +2814,30 @@ float:none!important;
     background-color: #EC1212;
 }
 
-#ag_main .add_interval .select_date {
+#ag_main .add_interval .select_cal {
     margin-top: 7px;
 }
 
-#ag_main .add_interval .select_date span {
+#ag_main .add_interval .select_cal span {
     color: black;
     font-weight: 600;
+}
+
+#ag_main .interval_list {
+    width: 100%;
+}
+
+#ag_main .select_cal select:last-child {
+    border-radius: 0 3px 3px 0;
+    -webkit-border-radius: 0 3px 3px 0;
+    -moz-border-radius: 0 3px 3px 0;
+    -khtml-border-radius: 0 3px 3px 0;
+}
+
+#ag_main .select_cal_wrapper {
+    position: absolute;
+    margin-left: 10%;
+    white-space: nowrap;
 }
 
 /* /INTERVAL */
