@@ -1,39 +1,59 @@
-<div class="add_interval">
-    <div class="select_cal">
-        <?php echo $lang['From:'] ?>
-        <select name="day_from[0]">
-            <?php for ($i = 1; $i <= 31; $i++): ?>
-                <option value="<?php echo $i ?>"><?php echo $i ?></option>
-            <?php endfor ?>
-        </select>
-        <select name="month_from[0]">
-            <?php foreach ($lang_monts as $n => $m): if ($n > 0): ?>
-                <option value="<?php echo $n ?>"><?php echo $m ?></option>
-            <?php endif; endforeach; ?>
-        </select>
-        <select name="year_from[0]">
-            <?php for ($i = date('Y'); $i <= (date('Y') + 2); $i++): ?>
-                <option value="<?php echo $i ?>"><?php echo $i ?></option>
-            <?php endfor ?>
-        </select>
+<div id="interval_list"></div>
+
+<div id="add_interval_container" style="display: none">
+    <div class="add_interval">
+        <button class="btn_remove_interval" title="<?php echo $lang['delete'] ?>">X</button>
+        <div class="select_cal">
+            <span><?php echo $lang['From:'] ?></span>
+            <select name="day_from[]">
+                <?php for ($i = 1; $i <= 31; $i++): ?>
+                    <option value="<?php echo $i ?>"><?php echo $i ?></option>
+                <?php endfor ?>
+            </select>
+            <select name="month_from[]">
+                <?php foreach ($lang_monts as $n => $m): if ($n > 0): ?>
+                    <option value="<?php echo $n ?>"><?php echo $m ?></option>
+                <?php endif; endforeach; ?>
+            </select>
+            <select name="year_from[]">
+                <?php for ($i = date('Y'); $i <= (date('Y') + 2); $i++): ?>
+                    <option value="<?php echo $i ?>"><?php echo $i ?></option>
+                <?php endfor ?>
+            </select>
+        </div>
+        <div class="select_cal">
+            <span><?php echo $lang['To:'] ?></span>
+            <select name="day_to[]">
+                <?php for ($i = 1; $i <= 31; $i++): ?>
+                    <option value="<?php echo $i ?>"><?php echo $i ?></option>
+                <?php endfor ?>
+            </select>
+            <select name="month_to[]">
+                <?php foreach ($lang_monts as $n => $m): if ($n > 0): ?>
+                    <option value="<?php echo $n ?>"><?php echo $m ?></option>
+                <?php endif; endforeach; ?>
+            </select>
+            <select name="year_to[
+
+            ]">
+                <?php for ($i = date('Y'); $i <= (date('Y') + 2); $i++): ?>
+                    <option value="<?php echo $i ?>"><?php echo $i ?></option>
+                <?php endfor ?>
+            </select>
+        </div>
     </div>
-    <div class="select_cal">
-        <?php echo $lang['To:'] ?>
-        <select name="day_to[0]">
-            <?php for ($i = 1; $i <= 31; $i++): ?>
-                <option value="<?php echo $i ?>"><?php echo $i ?></option>
-            <?php endfor ?>
-        </select>
-        <select name="month_to[0]">
-            <?php foreach ($lang_monts as $n => $m): if ($n > 0): ?>
-                <option value="<?php echo $n ?>"><?php echo $m ?></option>
-            <?php endif; endforeach; ?>
-        </select>
-        <select name="year_to[0]">
-            <?php for ($i = date('Y'); $i <= (date('Y') + 2); $i++): ?>
-                <option value="<?php echo $i ?>"><?php echo $i ?></option>
-            <?php endfor ?>
-        </select>
-    </div>
-    <button class="btn_add_interval"><?php echo $lang['add_interval'] ?></button>
 </div>
+
+<div class="btn_add_interval_wrapper">
+    <button class="btn_add_interval"
+            title="<?php echo $lang['add_date_interval'] ?>"><?php echo $lang['add_interval'] ?></button>
+</div>
+
+<script>
+    (function($) {
+        $(".btn_add_interval").click(function () {
+            $("#interval_list").append($("#add_interval_container").html());
+            $(this).blur();
+        });
+    })(jQuery);
+</script>
