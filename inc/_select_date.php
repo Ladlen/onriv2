@@ -4,7 +4,9 @@ $action_form = htmlspecialchars('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['RE
 
 <div id="add_interval_container" style="display: none">
     <div class="add_interval">
-        <button class="btn_remove_interval" title="<?php echo $lang['delete'] ?>">X</button>
+        <button class="btn_remove_interval" title="<?php echo $lang['delete'] ?>"
+                onclick="$(this).parent().remove();return false;">X
+        </button>
         <div class="select_cal_wrapper">
             <div class="select_cal">
                 <span><?php echo $lang['From:'] ?></span>
@@ -50,7 +52,7 @@ $action_form = htmlspecialchars('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['RE
 
 <form id="order" action="<?php echo $action_form ?>#order_form" method="post">
 
-    <div id="interval_list"></div>
+    <div id="interval_list" style="display:none"></div>
 
     <div class="btn_add_interval_wrapper">
         <button class="btn_add_interval"
@@ -61,9 +63,28 @@ $action_form = htmlspecialchars('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['RE
         (function ($) {
             $(".btn_add_interval").click(function (e) {
                 e.preventDefault();
-                $("#interval_list").append($("#add_interval_container").html());
+                $("#interval_list").show().append($("#add_interval_container").html());
                 $(this).blur();
                 return false;
             });
+
+            <?php
+            if (isset($_POST['day_from'])){
+                $count = count($_POST['day_from']);
+                for ($i = 0; $i < $count; ++$i):
+            ?>
+
+            var html = $($("#add_interval_container").html())
+                .find('name="day_from[]" option[value="<?php echo $_POST['day_from'][$i] ?>"]')
+                .prop('checked', true)
+                .html();
+            $("#interval_list").append(html);
+
+            <?php endfor ?>
+
+            $("#interval_list").show();
+
+            <?php } ?>
+
         })(jQuery);
     </script>
