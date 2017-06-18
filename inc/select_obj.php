@@ -262,10 +262,10 @@ if($provide_obj == 'daily_interval') {
 			echo $calendar_next;
 		}
 	}
+	echo '</div>';
+	//---/calendar
 }// === DISPLAY NEXT CALENDAR
 
-echo '</div>';
-//---/calendar
 
 
 

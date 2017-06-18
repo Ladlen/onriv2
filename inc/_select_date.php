@@ -1,9 +1,11 @@
-<div id="interval_list"></div>
+<?php
+$action_form = htmlspecialchars('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+?>
 
 <div id="add_interval_container" style="display: none">
     <div class="add_interval">
         <button class="btn_remove_interval" title="<?php echo $lang['delete'] ?>">X</button>
-        <div class="select_cal">
+        <div class="select_date">
             <span><?php echo $lang['From:'] ?></span>
             <select name="day_from[]">
                 <?php for ($i = 1; $i <= 31; $i++): ?>
@@ -21,7 +23,7 @@
                 <?php endfor ?>
             </select>
         </div>
-        <div class="select_cal">
+        <div class="select_date">
             <span><?php echo $lang['To:'] ?></span>
             <select name="day_to[]">
                 <?php for ($i = 1; $i <= 31; $i++): ?>
@@ -44,16 +46,22 @@
     </div>
 </div>
 
-<div class="btn_add_interval_wrapper">
-    <button class="btn_add_interval"
-            title="<?php echo $lang['add_date_interval'] ?>"><?php echo $lang['add_interval'] ?></button>
-</div>
+<form id="order" action="<?php echo $action_form ?>#order_form" method="post">
+    
+    <div id="interval_list"></div>
 
-<script>
-    (function($) {
-        $(".btn_add_interval").click(function () {
-            $("#interval_list").append($("#add_interval_container").html());
-            $(this).blur();
-        });
-    })(jQuery);
-</script>
+    <div class="btn_add_interval_wrapper">
+        <button class="btn_add_interval"
+                title="<?php echo $lang['add_date_interval'] ?>"><?php echo $lang['add_interval'] ?></button>
+    </div>
+
+    <script>
+        (function ($) {
+            $(".btn_add_interval").click(function (e) {
+                e.preventDefault();
+                $("#interval_list").append($("#add_interval_container").html());
+                $(this).blur();
+                return false;
+            });
+        })(jQuery);
+    </script>

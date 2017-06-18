@@ -2814,11 +2814,11 @@ float:none!important;
     background-color: #EC1212;
 }
 
-#ag_main .add_interval .select_cal {
+#ag_main .add_interval .select_date {
     margin-top: 7px;
 }
 
-#ag_main .add_interval .select_cal span {
+#ag_main .add_interval .select_date span {
     color: black;
     font-weight: 600;
 }
