@@ -2851,8 +2851,13 @@ float:none!important;
     text-align: center;
 }
 
-#ag_main .lost_day.interval::before {
-    color: red !important;
+/*#ag_main .lost_day.interval::before {
+    /!*color: red !important;*!/
+    color: #dd4444 !important;;
+}*/
+
+#ag_main .lost_day.interval.start_selection {
+    background-color: #009900;
 }
 
 /* /INTERVAL */

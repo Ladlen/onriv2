@@ -448,6 +448,9 @@ $lang = array(
 'select_last_day' => 'Select the last day ...',
 'select_first_day' => 'Select the first day ...',
 'selected_intervals' => 'Selected time intervals',
+'ordered_day' => 'Reserved day',
+'ordered_day_start_interval' => 'Reserved day - start interval',
+
 );
 
 

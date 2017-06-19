@@ -781,8 +781,7 @@ ddbl.setAttribute("class","busy_day tdd");
             if (empty($_GET['first_day'])) {
                 $dateUrlStr = '&amp;first_day[0]=' . $dd . '&amp;first_month[0]=' . $month . '&amp;first_year[0]=' . $year;
             } else {
-                $lastDayWasEmpty = true;
-                $dCount = count($_GET['first_day']);
+                $lastDayWasEmpty = false;
                 foreach ($_GET['first_day'] as $c => $data) {
 
                     $dataFirst['day'] = $_GET['first_day'][$c];
@@ -796,13 +795,14 @@ ddbl.setAttribute("class","busy_day tdd");
                     $dateUrlStr .= "&amp;first_day[$c]=$dataFirst[day]&amp;first_month[$c]=$dataFirst[month]&amp;first_year[$c]=$dataFirst[year]";
                     if (empty($_GET['last_day'][$c])) {
                         $dateUrlStr .= "&amp;last_day[$c]=$dd&amp;last_month[$c]=$month&amp;last_year[$c]=$year";
-                        $lastDayWasEmpty = false;
+                        $lastDayWasEmpty = true;
                     } else {
                         $dateUrlStr .= "&amp;last_day[$c]=$dataLast[day]&amp;last_month[$c]=$dataLast[month]&amp;last_year[$c]=$dataLast[year]";
                     }
                 }
                 if (!$lastDayWasEmpty) {
-                    $dateUrlStr .= "&amp;first_day[$c]=$dd&amp;first_month[$c]=$month&amp;first_year[$c]=$year";
+                    $nextC = $c + 1;
+                    $dateUrlStr .= "&amp;first_day[$nextC]=$dd&amp;first_month[$nextC]=$month&amp;first_year[$nextC]=$year";
                 }
             }
 
@@ -810,7 +810,7 @@ ddbl.setAttribute("class","busy_day tdd");
             if ($cellState === true) {
                 $calendar .= interval::cellReserved($dd, false);
             } elseif ($cellState === null) {
-                $calendar .= interval::cellReserved($dd, false);
+                $calendar .= interval::cellReserved($dd, false, true);
             } else {
                 $calendar .= '<div class="tdd">'
                 . '<a href="' . $script_name . '?obj=' . $obj . $dateUrlStr . $cat_url . $ofadm_url . '#ag_calendar" class="' . $a_class . '">

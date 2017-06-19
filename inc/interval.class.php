@@ -24,7 +24,7 @@ class interval
     {
         $s = $GLOBALS['lang']['select_first_day'];
         if ($show) {
-            echo "<i>$s</i>";
+            echo "<div class='interval_info'><i>$s</i></div>";
         }
         return $s;
     }
@@ -56,11 +56,19 @@ class interval
         return $s;
     }
 
-    public static function cellReserved($id, $show = true)
+    /**
+     * @param $id
+     * @param bool|true $show
+     * @param bool|false $startSelection является ли ячейка ячейкой начала выбора интервала
+     * @return string
+     */
+    public static function cellReserved($id, $show = true, $startSelection = false)
     {
+        $class = $startSelection ? 'start_selection' : '';
+        $title = $startSelection ? $GLOBALS['lang']['ordered_day_start_interval'] : $GLOBALS['lang']['ordered_day'];
         $s = <<<HTML
-        <div class="tdd lost_day interval">
-            <span class="bsdd" title="Зарезервированный день"><span class="sdd">$id</span></span>
+        <div class="tdd lost_day interval $class">
+            <span class="bsdd" title="$title"><span class="sdd">$id</span></span>
         </div>
 HTML;
 
