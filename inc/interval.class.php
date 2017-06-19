@@ -6,7 +6,8 @@ class interval
 
     public static function createLink($dateUrlStr)
     {
-        return "$GLOBALS[script_name]?obj={$GLOBALS['obj']}{$dateUrlStr}{$GLOBALS['cat_url']}{$GLOBALS['ofadm_url']}#ag_calendar";
+        $currMonthYear = "&month=$GLOBALS[select_month]&year=$GLOBALS[select_year]&";
+        return "$GLOBALS[script_name]?obj={$GLOBALS['obj']}{$dateUrlStr}$currMonthYear{$GLOBALS['cat_url']}{$GLOBALS['ofadm_url']}#ag_calendar";
     }
 
     /**
