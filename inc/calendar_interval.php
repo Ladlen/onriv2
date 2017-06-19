@@ -801,7 +801,7 @@ ddbl.setAttribute("class","busy_day tdd");
                         $dateUrlStr .= "&amp;last_day[$c]=$dataLast[day]&amp;last_month[$c]=$dataLast[month]&amp;last_year[$c]=$dataLast[year]";
                     }
                 }
-                if ($lastDayWasEmpty) {
+                if (!$lastDayWasEmpty) {
                     $dateUrlStr .= "&amp;first_day[$c]=$dd&amp;first_month[$c]=$month&amp;first_year[$c]=$year";
                 }
             }
@@ -813,7 +813,7 @@ ddbl.setAttribute("class","busy_day tdd");
                 $calendar .= interval::cellReserved($dd, false);
             } else {
                 $calendar .= '<div class="tdd">'
-                . '<a href="' . $script_name . '?obj=' . $obj . $dateUrlStr . '&amp;weekday=' . $weekday . $cat_url . $ofadm_url . '#ag_calendar" class="' . $a_class . '">
+                . '<a href="' . $script_name . '?obj=' . $obj . $dateUrlStr . $cat_url . $ofadm_url . '#ag_calendar" class="' . $a_class . '">
 <span class="' . $class_day . ' sdd">' . $dd . '</span>
 </a>';
                 $calendar .= '</div>';

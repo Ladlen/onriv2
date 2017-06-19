@@ -8,12 +8,14 @@ require_once 'interval.class.php';
 
     <?php if (empty($_GET['first_day'])) {
         interval::startInterval();
+        echo '<div class="interval_info">';
         interval::dayFirstSetCaption();
+        echo '</div>';
         interval::endInterval();
     } else {
         $count = count($_GET['first_day']);
         $lastDayIsSet = false;
-        foreach($_GET['first_day'] as $i => $data) {
+        foreach ($_GET['first_day'] as $i => $data) {
 
             $dataFirst['day'] = $_GET['first_day'][$i];
             $dataFirst['month'] = $_GET['first_month'][$i];
@@ -48,7 +50,12 @@ require_once 'interval.class.php';
 </div>
 
 <script>
-/*    function startNewInterval() {
+    jQuery(function () {
+        <?php if (!empty($_GET['last_day'])): ?>
+        jQuery("#submit").attr("disabled", false);
+        <?php endif ?>
+    });
+    /*    function startNewInterval() {
 
-    }*/
+     }*/
 </script>

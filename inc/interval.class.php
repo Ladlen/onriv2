@@ -125,9 +125,9 @@ HTML;*/
                     return null;
                 }
             }
-
-            return false;
         }
+
+        return false;
     }
 
     public static function orderDatas(&$dataFirst, &$dataLast)
