@@ -254,20 +254,24 @@ if($provide_obj == 'daily_interval') {
 
 	if($provide_obj == 'daily_interval') {
 		include ($folder.$psep.'inc/_selected_interval_dates.php');
-	}
+		echo '<div id="ag_calendar">';
+		include ($folder.$psep.'inc/calendar_interval.php');
+		echo $calendar;
+		echo '</div>';
+	} else {
+		include($folder . $psep . 'inc/calendar.php');
+		echo '<div id="ag_calendar">';
+		echo $calendar;
 
-	include ($folder.$psep.'inc/calendar.php');
-	echo '<div id="ag_calendar">';
-	echo $calendar;
+		if ($provide_obj == 'daily') {
 
-	if($provide_obj == 'daily') {
-
-		if (empty($select_time_spots)) {
-			include($folder . $psep . 'inc/calendar_next.php');
-			echo $calendar_next;
+			if (empty($select_time_spots)) {
+				include($folder . $psep . 'inc/calendar_next.php');
+				echo $calendar_next;
+			}
 		}
+		echo '</div>';
 	}
-	echo '</div>';
 	//---/calendar
 //}// === DISPLAY NEXT CALENDAR
 

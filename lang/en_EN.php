@@ -447,6 +447,7 @@ $lang = array(
 'add_date_interval' => 'Add time interval',
 'select_last_day' => 'Select the last day ...',
 'select_first_day' => 'Select the first day ...',
+'selected_intervals' => 'Selected time intervals',
 );
 
 

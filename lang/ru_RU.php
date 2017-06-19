@@ -449,6 +449,7 @@ $lang = array(
 'add_date_interval' => 'Добавить промежуток времени',
 'select_last_day' => 'Выберите последний день ...',
 'select_first_day' => 'Выберите первый день ...',
+'selected_intervals' => 'Выбранные промежутки времени',
 );
 
 
