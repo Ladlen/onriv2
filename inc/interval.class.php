@@ -101,7 +101,7 @@ HTML;*/
         }
 
         foreach ($intervals['first_day'] as $key => $value) {
-            if (isset($intervals['last_day'][$key])) {
+            if (!empty($intervals['last_day'][$key])) {
                 $dataFirst['day'] = $intervals['first_day'][$key];
                 $dataFirst['month'] = $intervals['first_month'][$key];
                 $dataFirst['year'] = $intervals['first_year'][$key];

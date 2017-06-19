@@ -783,8 +783,7 @@ ddbl.setAttribute("class","busy_day tdd");
             } else {
                 $lastDayWasEmpty = false;
                 foreach ($_GET['first_day'] as $c => $data) {
-
-                    $dataFirst['day'] = $_GET['first_day'][$c];
+                    /*$dataFirst['day'] = $_GET['first_day'][$c];
                     $dataFirst['month'] = $_GET['first_month'][$c];
                     $dataFirst['year'] = $_GET['first_year'][$c];
                     $dataLast['day'] = $_GET['last_day'][$c];
@@ -792,12 +791,22 @@ ddbl.setAttribute("class","busy_day tdd");
                     $dataLast['year'] = $_GET['last_year'][$c];
                     interval::orderDatas($dataFirst, $dataLast);
 
-                    $dateUrlStr .= "&amp;first_day[$c]=$dataFirst[day]&amp;first_month[$c]=$dataFirst[month]&amp;first_year[$c]=$dataFirst[year]";
+                    $dateUrlStr .= "&amp;first_day[$c]=$dataFirst[day]&amp;first_month[$c]=$dataFirst[month]&amp;first_year[$c]=$dataFirst[year]";*/
                     if (empty($_GET['last_day'][$c])) {
-                        $dateUrlStr .= "&amp;last_day[$c]=$dd&amp;last_month[$c]=$month&amp;last_year[$c]=$year";
+                        $dateUrlStr .= "&amp;first_day[$c]=$dataFirst[day]&amp;first_month[$c]=$dataFirst[month]&amp;first_year[$c]=$dataFirst[year]"
+                            . "&amp;last_day[$c]=$dd&amp;last_month[$c]=$month&amp;last_year[$c]=$year";
                         $lastDayWasEmpty = true;
                     } else {
-                        $dateUrlStr .= "&amp;last_day[$c]=$dataLast[day]&amp;last_month[$c]=$dataLast[month]&amp;last_year[$c]=$dataLast[year]";
+                        $dataFirst['day'] = $_GET['first_day'][$c];
+                        $dataFirst['month'] = $_GET['first_month'][$c];
+                        $dataFirst['year'] = $_GET['first_year'][$c];
+                        $dataLast['day'] = $_GET['last_day'][$c];
+                        $dataLast['month'] = $_GET['last_month'][$c];
+                        $dataLast['year'] = $_GET['last_year'][$c];
+                        interval::orderDatas($dataFirst, $dataLast);
+
+                        $dateUrlStr .= "&amp;first_day[$c]=$dataFirst[day]&amp;first_month[$c]=$dataFirst[month]&amp;first_year[$c]=$dataFirst[year]"
+                            . "&amp;last_day[$c]=$dataLast[day]&amp;last_month[$c]=$dataLast[month]&amp;last_year[$c]=$dataLast[year]";
                     }
                 }
                 if (!$lastDayWasEmpty) {
