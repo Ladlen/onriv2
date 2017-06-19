@@ -458,11 +458,11 @@ while($day <= $maxdays)
     else if ($year > date('Y') || $year >= date('Y') && $month > date('m') || $year >= date('Y') && $month == date('m') && $day >= date('d')){
 
 
-        //$calendar .= '<div class="tdd ">';
+        $calendar .= '<div class="tdd ">';
 
         if(isset($_GET['day']) && $_GET['day'] == $dd) {$a_class = $a_class.' select_date';}
 
-        if($provide_obj == 'daily') { // ======================== DAILY
+        if($provide_obj == 'daily' || $provide_obj == 'daily_interval') { // ======================== DAILY
 
 //=======================SHIFT PRICE WEEKDAYS & DATES
 //$active_wd = '0';
@@ -541,9 +541,31 @@ while($day <= $maxdays)
 
 
 //========================================== dates spots
-                if($select_time_spots == '1') {
-                    if ($provide_obj == 'daily') {
+                if($select_time_spots == '1' || $provide_obj == 'daily_interval') {
+                    if ($provide_obj == 'daily_interval') {
+                        //$calendar .= '<div class="tdd">';
+                        //$calendar .= '<label>';
+                        $calendar .= '<div id="dd_'.$dd.$month.'" class="spots_day">';
 
+                        $dateUrlStr = interval::createDateUrlStr($_GET, $dd, $month, $year);
+
+                        $cellState = interval::ifDateAlreadyReservedByCurrentUser($dd, $month, $year, $_GET);
+                        if ($cellState === true) {
+                            $calendar .= interval::cellReserved($dd, false);
+                        } elseif ($cellState === null) {
+                            $calendar .= interval::cellReserved($dd, false, true);
+                        } else {
+                            $calendar .= //'<div class="tdd">'
+                                '<a href="' . interval::createLink($dateUrlStr) . '" class="' . $a_class . '">'
+                                . '<span class="' . $class_day . ' sdd">' . $dd . '</span></a>';
+                            //$calendar .= '</div>';
+                        }
+
+                        $calendar .= '</div>';
+                        //$calendar .= '</label>';
+                       // $calendar .= '</div>';
+
+                    } elseif ($provide_obj == 'daily') {
                         $calendar .= '<div id="dd_'.$dd.$month.'" class="spots_day"><a href="'.$script_name.'?obj='.$obj.'&amp;day='.$dd.'&amp;month='.$month.'&amp;year='.$year.'&amp;weekday='.$weekday.$cat_url.$ofadm_url.'#ag_calendar" class="'.$a_class.'">
 <span class="'.$class_day.' sdd">'.$dd.'</span>
 </a></div>';
@@ -553,13 +575,12 @@ while($day <= $maxdays)
                         }
 
                         $calendar .= '';
-
                     }//provide daily
-                } else {
 
+                } else {
 //checkbox
-                    $calendar .= '<input type="checkbox" name="dates['.$dd.'.'.$month.'.'.$year.']" value="'.$dd.'.'.$month.'.'.$year.'.'.$weekday.'" id="c'.$dd.'" class="ch_time" onclick="checkbg(\''.$dd.'\')" '.$checked.'/>';
-                    $calendar .= '<div class="'.$a_class.' h_act" id="b'.$dd.'"><span class="'.$class_day.' sdd">'.$dd.'</span></div>';
+                    $calendar .= '<input type="checkbox" name="dates[' . $dd . '.' . $month . '.' . $year . ']" value="' . $dd . '.' . $month . '.' . $year . '.' . $weekday . '" id="c' . $dd . '" class="ch_time" onclick="checkbg(\'' . $dd . '\')" ' . $checked . '/>';
+                    $calendar .= '<div class="' . $a_class . ' h_act" id="b' . $dd . '"><span class="' . $class_day . ' sdd">' . $dd . '</span></div>';
                 }
 
                 $calendar .= '<div class="time_data">
@@ -575,7 +596,7 @@ while($day <= $maxdays)
 
 
 
-                if ($provide_obj == 'daily') {
+                if ($provide_obj == 'daily' || $provide_obj == 'daily_interval') {
                     $price_day = $daily_price_obj;
                     if ($select_day.'.'.$select_month.'.'.$select_year.'.'.$select_weekday == $dd.'.'.$month.'.'.$year.'.'.$weekday){
                         $sel_s_price = $daily_price_obj;
@@ -591,7 +612,7 @@ while($day <= $maxdays)
 
 /////////////////////////////////////////////////////////////////
                     if ($select_day.'.'.$select_month.'.'.$select_year.'.'.$select_weekday == $dd.'.'.$month.'.'.$year.'.'.$weekday){
-                        if ($provide_obj == 'daily') { $sel_s_price = $fix_price_obj; }
+                        if ($provide_obj == 'daily' || $provide_obj == 'daily_interval') { $sel_s_price = $fix_price_obj; }
                     }
 //===============================================================
 
@@ -606,7 +627,7 @@ while($day <= $maxdays)
 
 /////////////////////////////////////////////////////////////////
                     if ($select_day.'.'.$select_month.'.'.$select_year.'.'.$select_weekday == $dd.'.'.$month.'.'.$year.'.'.$weekday){
-                        if ($provide_obj == 'daily') { $sel_s_price = $price_day; }
+                        if ($provide_obj == 'daily' || $provide_obj == 'daily_interval') { $sel_s_price = $price_day; }
                     }
 //===============================================================
 
@@ -626,7 +647,7 @@ while($day <= $maxdays)
 
 //===============================================================LEFT SPOTS
                 if ($select_time_spots == '1') {
-                    if ($provide_obj == 'daily') {
+                    if ($provide_obj == 'daily' || $provide_obj == 'daily_interval') {
                         $str_spots = '0';
 ///////////////////////
 
@@ -776,7 +797,7 @@ ddbl.setAttribute("class","busy_day tdd");
 //=================TOTAL PRICE
             if (isset($_POST['dates'][$dd.'.'.$month.'.'.$year])) {$total_price_str .= $price_day.'&&';}
 
-        } elseif ($provide_obj == 'daily_interval') {
+        } /*elseif ($provide_obj == 'daily_interval') {
             $dateUrlStr = interval::createDateUrlStr($_GET, $dd, $month, $year);
 
             $cellState = interval::ifDateAlreadyReservedByCurrentUser($dd, $month, $year, $_GET);
@@ -793,7 +814,7 @@ ddbl.setAttribute("class","busy_day tdd");
             }
         }
 
-        $calendar .= '<div class="clear"></div>';
+        $calendar .= '<div class="clear"></div>';*/
         //$calendar .= '</div>';
 
 
