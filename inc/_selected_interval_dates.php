@@ -14,22 +14,31 @@ require_once 'interval.class.php';
         $count = count($_GET['first_day']);
         $lastDayIsSet = false;
         foreach($_GET['first_day'] as $i => $data) {
+
+            $dataFirst['day'] = $_GET['first_day'][$i];
+            $dataFirst['month'] = $_GET['first_month'][$i];
+            $dataFirst['year'] = $_GET['first_year'][$i];
+            $dataLast['day'] = $_GET['last_day'][$i];
+            $dataLast['month'] = $_GET['last_month'][$i];
+            $dataLast['year'] = $_GET['last_year'][$i];
+            interval::orderDatas($dataFirst, $dataLast);
+
             interval::startInterval();
             interval::closeButton();
             echo '<div class="interval_info">';
-            interval::dayCaption($_GET['first_day'][$i], $_GET['first_month'][$i], $_GET['first_year'][$i]);
+            interval::dayCaption($dataFirst['day'], $dataFirst['month'], $dataFirst['year']);
             echo ' - ';
             if (empty($_GET['last_day'][$i])) {
                 interval::dayLastSetCaption();
             } else {
-                interval::dayCaption($_GET['last_day'][$i], $_GET['last_month'][$i], $_GET['last_year'][$i]);
+                interval::dayCaption($dataLast['day'], $dataLast['month'], $dataLast['year']);
                 $lastDayIsSet = true;
             }
             echo '</div>';
             interval::endInterval();
         }
 
-        if ($lastDayCaptIsSet) {
+        if ($lastDayIsSet) {
             interval::startInterval();
             interval::dayFirstSetCaption();
             interval::endInterval();
