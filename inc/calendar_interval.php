@@ -777,43 +777,7 @@ ddbl.setAttribute("class","busy_day tdd");
             if (isset($_POST['dates'][$dd.'.'.$month.'.'.$year])) {$total_price_str .= $price_day.'&&';}
 
         } elseif ($provide_obj == 'daily_interval') {
-            $dateUrlStr = '';
-            if (empty($_GET['first_day'])) {
-                $dateUrlStr = '&amp;first_day[0]=' . $dd . '&amp;first_month[0]=' . $month . '&amp;first_year[0]=' . $year;
-            } else {
-                $lastDayWasEmpty = false;
-                foreach ($_GET['first_day'] as $c => $data) {
-                    /*$dataFirst['day'] = $_GET['first_day'][$c];
-                    $dataFirst['month'] = $_GET['first_month'][$c];
-                    $dataFirst['year'] = $_GET['first_year'][$c];
-                    $dataLast['day'] = $_GET['last_day'][$c];
-                    $dataLast['month'] = $_GET['last_month'][$c];
-                    $dataLast['year'] = $_GET['last_year'][$c];
-                    interval::orderDatas($dataFirst, $dataLast);
-
-                    $dateUrlStr .= "&amp;first_day[$c]=$dataFirst[day]&amp;first_month[$c]=$dataFirst[month]&amp;first_year[$c]=$dataFirst[year]";*/
-                    if (empty($_GET['last_day'][$c])) {
-                        $dateUrlStr .= "&amp;first_day[$c]=$dataFirst[day]&amp;first_month[$c]=$dataFirst[month]&amp;first_year[$c]=$dataFirst[year]"
-                            . "&amp;last_day[$c]=$dd&amp;last_month[$c]=$month&amp;last_year[$c]=$year";
-                        $lastDayWasEmpty = true;
-                    } else {
-                        $dataFirst['day'] = $_GET['first_day'][$c];
-                        $dataFirst['month'] = $_GET['first_month'][$c];
-                        $dataFirst['year'] = $_GET['first_year'][$c];
-                        $dataLast['day'] = $_GET['last_day'][$c];
-                        $dataLast['month'] = $_GET['last_month'][$c];
-                        $dataLast['year'] = $_GET['last_year'][$c];
-                        interval::orderDatas($dataFirst, $dataLast);
-
-                        $dateUrlStr .= "&amp;first_day[$c]=$dataFirst[day]&amp;first_month[$c]=$dataFirst[month]&amp;first_year[$c]=$dataFirst[year]"
-                            . "&amp;last_day[$c]=$dataLast[day]&amp;last_month[$c]=$dataLast[month]&amp;last_year[$c]=$dataLast[year]";
-                    }
-                }
-                if (!$lastDayWasEmpty) {
-                    $nextC = $c + 1;
-                    $dateUrlStr .= "&amp;first_day[$nextC]=$dd&amp;first_month[$nextC]=$month&amp;first_year[$nextC]=$year";
-                }
-            }
+            $dateUrlStr = interval::createDateUrlStr($_GET, $dd, $month, $year);
 
             $cellState = interval::ifDateAlreadyReservedByCurrentUser($dd, $month, $year, $_GET);
             if ($cellState === true) {
@@ -822,9 +786,9 @@ ddbl.setAttribute("class","busy_day tdd");
                 $calendar .= interval::cellReserved($dd, false, true);
             } else {
                 $calendar .= '<div class="tdd">'
-                . '<a href="' . $script_name . '?obj=' . $obj . $dateUrlStr . $cat_url . $ofadm_url . '#ag_calendar" class="' . $a_class . '">
-<span class="' . $class_day . ' sdd">' . $dd . '</span>
-</a>';
+                    . '<a href="' . interval::createLink($dateUrlStr) . '" class="' . $a_class . '">'
+                //. '<a href="' . $script_name . '?obj=' . $obj . $dateUrlStr . $cat_url . $ofadm_url . '#ag_calendar" class="' . $a_class . '">
+                    . '<span class="' . $class_day . ' sdd">' . $dd . '</span></a>';
                 $calendar .= '</div>';
             }
         }

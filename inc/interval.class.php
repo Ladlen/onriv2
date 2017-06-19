@@ -2,9 +2,81 @@
 
 class interval
 {
-    public static function closeButton($show = true)
+    public static function createLink($dateUrlStr)
     {
-        $s = "<a class='btn_remove_interval' title='{$GLOBALS['lang']['delete']}'>X</a>";
+        return "$GLOBALS[script_name]?obj={$GLOBALS['obj']}{$dateUrlStr}{$GLOBALS['cat_url']}{$GLOBALS['ofadm_url']}#ag_calendar";
+    }
+
+    /**
+     * @param $dates
+     * @param $dd
+     * @param $month
+     * @param $year
+     * @param bool|false $excludeWithStart for Delete button
+     * @return string
+     */
+    public static function createDateUrlStr($dates, $dd, $month, $year, $excludeWithStart = false)
+    {
+        $dateUrlStr = '';
+
+        if (empty($dates['first_day'])) {
+            if (!$excludeWithStart) {
+                $dateUrlStr = '&first_day[0]=' . $dd . '&first_month[0]=' . $month . '&first_year[0]=' . $year;
+            }
+        } else {
+            $lastDayWasEmpty = false;
+            $cLast = 0;
+            foreach ($dates['first_day'] as $c => $data) {
+
+                if ($excludeWithStart
+                    && $dates['first_day'][$c] == $excludeWithStart['first_day']
+                    && $dates['first_month'][$c] == $excludeWithStart['first_month']
+                    && $dates['first_year'][$c] == $excludeWithStart['first_year']
+                ) {
+                    continue;
+                }
+
+                if (empty($dates['last_day'][$c])) {
+                    $dateUrlStr .= "&first_day[$c]={$dates['first_day'][$c]}&first_month[$c]={$dates['first_month'][$c]}&first_year[$c]={$dates['first_year'][$c]}";
+                    if (!$excludeWithStart) {
+                        $dateUrlStr .= "&last_day[$c]=$dd&last_month[$c]=$month&last_year[$c]=$year";
+                    }
+                    $lastDayWasEmpty = true;
+                } else {
+                    $dataFirst['day'] = $dates['first_day'][$c];
+                    $dataFirst['month'] = $dates['first_month'][$c];
+                    $dataFirst['year'] = $dates['first_year'][$c];
+                    $dataLast['day'] = $dates['last_day'][$c];
+                    $dataLast['month'] = $dates['last_month'][$c];
+                    $dataLast['year'] = $dates['last_year'][$c];
+                    interval::orderDatas($dataFirst, $dataLast);
+
+                    $dateUrlStr .= "&first_day[$c]=$dataFirst[day]&first_month[$c]=$dataFirst[month]&first_year[$c]=$dataFirst[year]"
+                        . "&last_day[$c]=$dataLast[day]&last_month[$c]=$dataLast[month]&last_year[$c]=$dataLast[year]";
+                }
+
+                $cLast = $c;
+            }
+            if (!$lastDayWasEmpty && !$excludeWithStart) {
+                $nextC = $cLast + 1;
+                $dateUrlStr .= "&first_day[$nextC]=$dd&first_month[$nextC]=$month&first_year[$nextC]=$year";
+            }
+        }
+
+        return urlencode($dateUrlStr);
+    }
+
+    public static function closeButton($dates, $excludeIndex, $show = true)
+    {
+        global $dd, $month, $year;
+        $dateUrlStr = self::createDateUrlStr($dates, $dd, $month, $year,
+            [
+                'first_day' => $dates['first_day'][$excludeIndex],
+                'first_month' => $dates['first_month'][$excludeIndex],
+                'first_year' => $dates['first_year'][$excludeIndex]
+            ]);
+        $href = self::createLink($dateUrlStr);
+        $s = "<a class='btn_remove_interval' title='{$GLOBALS['lang']['delete']}' href='$href'>X</a>";
         if ($show) {
             echo $s;
         }

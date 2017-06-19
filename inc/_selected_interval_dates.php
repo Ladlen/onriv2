@@ -13,7 +13,7 @@ require_once 'interval.class.php';
     } else {
         foreach ($_GET['first_day'] as $i => $data) {
             interval::startInterval();
-            interval::closeButton();
+            interval::closeButton($_GET, $i);
             echo '<div class="interval_info">';
             if (empty($_GET['last_day'][$i])) {
                 interval::dayCaption($_GET['first_day'][$i], $_GET['first_month'][$i], $_GET['first_year'][$i]);
