@@ -4,7 +4,7 @@ class interval
 {
     public static function closeButton($show = true)
     {
-        $s = "<button class='btn_remove_interval' title='{$GLOBALS['lang']['delete']}'>X</button>";
+        $s = "<a class='btn_remove_interval' title='{$GLOBALS['lang']['delete']}'>X</a>";
         if ($show) {
             echo $s;
         }

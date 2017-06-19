@@ -2824,15 +2824,6 @@ float:none!important;
     white-space: nowrap;
 }*/
 
-#ag_main .added_interval .btn_remove_interval {
-    float: left;
-    font-weight: 700;
-}
-
-#ag_main .added_interval .btn_remove_interval:hover {
-    background-color: #EC1212;
-}
-
 #ag_main .added_interval {
     width: 100%;
     background-color: rgb(243, 243, 245);
@@ -2862,6 +2853,22 @@ float:none!important;
 
 #ag_main .lost_day.interval.start_selection {
     background-color: #009900;
+}
+
+#ag_main .added_interval .btn_remove_interval {
+    float: left;
+    font-weight: 700;
+    width: 44px;
+    height: 31px;
+    background-color: #101321;
+    color: white;
+    text-decoration: none;
+    padding-top: 13px;
+    cursor: pointer;
+}
+
+#ag_main .added_interval .btn_remove_interval:hover {
+    background-color: #fc8f1a;
 }
 
 /* /INTERVAL */
