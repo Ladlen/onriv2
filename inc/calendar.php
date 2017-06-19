@@ -456,7 +456,7 @@ $calendar .= '<div class="lost_busy_day tdd" title="'.$lang['lost_day'].'">
 else if ($year > date('Y') || $year >= date('Y') && $month > date('m') || $year >= date('Y') && $month == date('m') && $day >= date('d')){	
 
 	
-$calendar .= '<div class="tdd ">';
+$calendar .= '<div class="tdd">';
 
 if(isset($_GET['day']) && $_GET['day'] == $dd) {$a_class = $a_class.' select_date';}
 
@@ -774,30 +774,8 @@ $calendar .= '</label>';  }
 //=================TOTAL PRICE	
 if (isset($_POST['dates'][$dd.'.'.$month.'.'.$year])) {$total_price_str .= $price_day.'&&';}	
 	
-} elseif ($provide_obj == 'daily_interval') {
-	$dateUrlStr = '';
-	if (empty($_GET['first_day'])) {
-		$dateUrlStr = '&amp;first_day[0]=' . $dd . '&amp;first_month[0]=' . $month . '&amp;first_year[0]=' . $year;
-	} else {
-		$lastDayWasEmpty = true;
-		$dCount = count($_GET['first_day']);
-		for($c = 0; $c < $dCount; ++$c) {
-			$dateUrlStr .= "&amp;first_day[$c]={$_GET[first_day][$c]}&amp;first_month[$c]={$_GET[first_month][$c]}&amp;first_year[$c]={$_GET[first_year][$c]}";
-			if (empty($_GET['last_day'][$c])) {
-				$dateUrlStr .= "&amp;last_day[$c]=$dd&amp;last_month[$c]=$month&amp;last_year[$c]=$year";
-				$lastDayWasEmpty = false;
-			} else {
-				$dateUrlStr .= "&amp;last_day[$c]={$_GET[last_day][$c]}&amp;last_month[$c]={$_GET[last_month][$c]}&amp;last_year[$c]={$_GET[last_year][$c]}";
-			}
-		}
-		if ($lastDayWasEmpty) {
-			$dateUrlStr = "&amp;first_day[$c]=$dd&amp;first_month[$c]=$month&amp;first_year[$c]=$year";
-		}
-	}
-	$calendar .= '<a href="'.$script_name.'?obj='.$obj.$dateUrlStr.'&amp;weekday='.$weekday.$cat_url.$ofadm_url.'#ag_calendar" class="'.$a_class.'">
-<span class="'.$class_day.' sdd">'.$dd.'</span>
-</a>';
-} else {	// ====================== HOURLY
+} else { // ====================== HOURLY
+	
 $calendar .= '<a href="'.$script_name.'?obj='.$obj.'&amp;day='.$dd.'&amp;month='.$month.'&amp;year='.$year.'&amp;weekday='.$weekday.$cat_url.$ofadm_url.'#ag_calendar" class="'.$a_class.'">
 <span class="'.$class_day.' sdd">'.$dd.'</span>
 </a>';
