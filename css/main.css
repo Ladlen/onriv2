@@ -2786,7 +2786,7 @@ float:none!important;
 
 /* INTERVAL */
 
-#ag_main .add_interval {
+/*#ag_main .add_interval {
     width: 100%;
     background-color: rgb(243, 243, 245);
     text-align: center;
@@ -2795,7 +2795,7 @@ float:none!important;
 }
 
 #ag_main .btn_add_interval {
-    /*float: right;*/
+    /!*float: right;*!/
     display: inline;
 }
 
@@ -2838,6 +2838,6 @@ float:none!important;
     position: absolute;
     margin-left: 10%;
     white-space: nowrap;
-}
+}*/
 
 /* /INTERVAL */

@@ -247,10 +247,15 @@ echo '<div class="clear"></div>';
 
 echo '</div>'; //block full serv -------------------
 
-// === DISPLAY CALENDAR
+/*// === DISPLAY CALENDAR
 if($provide_obj == 'daily_interval') {
 	include ($folder.$psep.'inc/_select_date.php');
-} else {
+} else {*/
+
+	if($provide_obj == 'daily_interval') {
+		include ($folder.$psep.'inc/_selected_interval_dates.php');
+	}
+
 	include ($folder.$psep.'inc/calendar.php');
 	echo '<div id="ag_calendar">';
 	echo $calendar;
@@ -264,7 +269,7 @@ if($provide_obj == 'daily_interval') {
 	}
 	echo '</div>';
 	//---/calendar
-}// === DISPLAY NEXT CALENDAR
+//}// === DISPLAY NEXT CALENDAR
 
 
 

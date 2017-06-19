@@ -445,6 +445,8 @@ $lang = array(
 'help_only_pay' => 'If this option is enabled, it is possible to make an order without selecting a payment method will be impossible.',
 'add_interval' => 'Add interval',
 'add_date_interval' => 'Add time interval',
+'select_last_day' => 'Select the last day ...',
+'select_first_day' => 'Select the first day ...',
 );
 
 

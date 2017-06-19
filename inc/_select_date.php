@@ -61,10 +61,14 @@ $action_form = htmlspecialchars('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['RE
 
     <script>
         (function ($) {
+
+            //function check
+
             $(".btn_add_interval").click(function (e) {
                 e.preventDefault();
                 $("#interval_list").show().append($("#add_interval_container").html());
                 $(this).blur();
+                $("#submit").prop('disabled', false);
                 return false;
             });
 
