@@ -150,8 +150,20 @@ class interval
      */
     public static function cellReserved($id, $show = true, $startSelection = false)
     {
-        $class = $startSelection ? 'start_selection' : '';
-        $title = $startSelection ? $GLOBALS['lang']['ordered_day_start_interval'] : $GLOBALS['lang']['ordered_day'];
+        if ($startSelection == 'start_selection') {
+            $class = 'start_selection';
+            $title = $GLOBALS['lang']['ordered_day_start_interval'];
+        } elseif ($startSelection == 'start_selection') {
+            $class = 'last_date_cant_reach';
+            $title = $GLOBALS['lang']['not_accessible_date'];
+        } else {
+            $class = '';
+            $title = $GLOBALS['lang']['ordered_day'];
+        }
+        /*$class = $startSelection == 'start_selection' ? 'start_selection' : '';
+        $title = $startSelection == 'start_selection' ? $GLOBALS['lang']['ordered_day_start_interval'] : $GLOBALS['lang']['ordered_day'];
+        $class = $startSelection == 'last_date_cant_reach' ? 'last_date_cant_reach' : '';
+        $title = $startSelection == 'last_date_cant_reach' ? $GLOBALS['lang']['ordered_day_start_interval'] : $GLOBALS['lang']['ordered_day'];*/
         $s = <<<HTML
         <div class="tdd lost_day interval $class">
             <span class="bsdd" title="$title"><span class="sdd">$id</span></span>
@@ -173,6 +185,9 @@ HTML;*/
     /**
      * Возвращает false если дата свободна, true если уже забронирована, null если при бронировании установлена
      * только первая дата промежутка.
+     *
+     * Возвращает false если дата свободна, 1 если уже забронирована, 2 если при бронировании установлена
+     * только первая дата промежутка, 3 если текущая дата имеет препятствие на пути к первой установленной дате.
      *
      * @param $day
      * @param $month
@@ -210,19 +225,68 @@ HTML;*/
                             && $dataLast['month'] == $month
                             && $dataLast['day'] >= $day))
                 ) {
-                    return true;
+                    return 1;
                 }
 
             } else {
                 // Промежуток не установлен - проверяем только наличие выбранной начальной даты
                 if ($intervals['f_day'][$key] == $day && $intervals['f_month'][$key] == $month && $intervals['f_year'][$key] == $year) {
-                    return null;
+                    return 2;
+                }
+
+                // Проверим нет ли на пути от препятствий в виде уже заказанных интервалов
+                $dataFirst['day'] = $intervals['f_day'][$key];
+                $dataFirst['month'] = $intervals['f_month'][$key];
+                $dataFirst['year'] = $intervals['f_year'][$key];
+                $dataLast['day'] = $day;
+                $dataLast['month'] = $month;
+                $dataLast['year'] = $year;
+                self::orderDatas($dataFirst, $dataLast);
+
+                $dtFirst = new DateTime("$dataFirst[year]-$dataFirst[month]-$dataFirst[day]");
+                $dtLast = new DateTime("$dataLast[year]-$dataLast[month]-$dataLast[day]");
+
+                $cIntervals = self::findCompleteIntervals($intervals);
+                while ($dtFirst < $dtLast) {
+                    if (self::ifDateAlreadyReservedByCurrentUser(
+                            $dtFirst->format('d'),
+                            $dtFirst->format('m'),
+                            $dtFirst->format('Y'),
+                            $cIntervals
+                        ) != false
+                    ) {
+                        return 3;
+                    }
+                    $dtFirst->modify('+1 day');
                 }
             }
         }
 
         return false;
     }
+
+    public static function findCompleteIntervals($intervals)
+    {
+        $cIntervals = [];
+
+        if (empty($intervals['f_day'])) {
+            return [];
+        }
+
+        foreach ($intervals['f_day'] as $key => $value) {
+            if (!empty($intervals['l_day'][$key])) {
+                $cIntervals[$key]['f_day'] = $intervals['f_day'][$key];
+                $cIntervals[$key]['f_month'] = $intervals['f_month'][$key];
+                $cIntervals[$key]['f_year'] = $intervals['f_year'][$key];
+                $cIntervals[$key]['l_day'] = $intervals['l_day'][$key];
+                $cIntervals[$key]['l_month'] = $intervals['l_month'][$key];
+                $cIntervals[$key]['l_year'] = $intervals['l_year'][$key];
+            }
+        }
+
+        return $cIntervals;
+    }
+
 
     public static function orderDatas(&$dataFirst, &$dataLast)
     {

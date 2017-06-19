@@ -452,6 +452,7 @@ $lang = array(
 'selected_intervals' => 'Выбранные промежутки времени',
 'ordered_day' => 'Резервирующийся день',
 'ordered_day_start_interval' => 'Резервирующийся день - начало интервала',
+'not_accessible_date' => 'Дата не достижима',
 );
 
 

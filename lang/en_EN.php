@@ -450,7 +450,7 @@ $lang = array(
 'selected_intervals' => 'Selected time intervals',
 'ordered_day' => 'Day to order',
 'ordered_day_start_interval' => 'Day to order - start interval',
-
+'not_accessible_date' => 'Date is not accessible',
 );
 
 

@@ -2855,6 +2855,10 @@ float:none!important;
     background-color: #009900;
 }
 
+#ag_main .lost_day.interval.last_date_cant_reach {
+    background-color: #44bbbb;
+}
+
 #ag_main .added_interval .btn_remove_interval {
     float: left;
     font-weight: 700;
