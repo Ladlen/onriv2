@@ -63,7 +63,7 @@ class interval
             }
         }
 
-        return urlencode($dateUrlStr);
+        return $dateUrlStr;
     }
 
     public static function closeButton($dates, $excludeIndex, $show = true)
@@ -76,7 +76,7 @@ class interval
                 'first_year' => $dates['first_year'][$excludeIndex]
             ]);
         $href = self::createLink($dateUrlStr);
-        $s = "<a class='btn_remove_interval' title='{$GLOBALS['lang']['delete']}' href='$href'>X</a>";
+        $s = "<a class='btn_remove_interval' title='{$GLOBALS['lang']['delete']}' href='" . htmlspecialchars($href) . "'>X</a>";
         if ($show) {
             echo $s;
         }
