@@ -450,8 +450,8 @@ $lang = array(
 'select_last_day' => 'Выберите последний день ...',
 'select_first_day' => 'Выберите первый день ...',
 'selected_intervals' => 'Выбранные промежутки времени',
-'ordered_day' => 'Зарезервированный день',
-'ordered_day_start_interval' => 'Зарезервированный день - начало интервала',
+'ordered_day' => 'Резервирующийся день',
+'ordered_day_start_interval' => 'Резервирующийся день - начало интервала',
 );
 
 

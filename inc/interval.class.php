@@ -2,6 +2,8 @@
 
 class interval
 {
+    public static $getValues = ['first_day', 'last_day', 'first_month', 'last_month', 'first_year', 'last_year'];
+
     public static function createLink($dateUrlStr)
     {
         return "$GLOBALS[script_name]?obj={$GLOBALS['obj']}{$dateUrlStr}{$GLOBALS['cat_url']}{$GLOBALS['ofadm_url']}#ag_calendar";
@@ -64,6 +66,17 @@ class interval
         }
 
         return $dateUrlStr;
+    }
+
+    public static function createUrlFromDates($dates)
+    {
+        $dateOnly = [];
+        foreach ($dates as $name => $value) {
+            if (in_array($name, self::$getValues)) {
+                $dateOnly[$name] = $value;
+            }
+        }
+        return http_build_query($dateOnly);
     }
 
     public static function closeButton($dates, $excludeIndex, $show = true)

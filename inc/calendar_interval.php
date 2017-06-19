@@ -305,6 +305,13 @@ $calendar .= '<div class="select_cal" id="period">';
 $calendar .= '<form action="' . $self . '#ag_calendar" method="get">';
 
 $calendar .= '<input type="hidden" name="obj" value="' . $obj . '" />';
+foreach ($_GET as $gName => $gVal) {
+    if (in_array($gName, interval::$getValues)) {
+        foreach ($gVal as $gelId => $gelVal) {
+            $calendar .= "<input type='hidden' name='{$gName}[$gelId]' value='$gelVal' />\n";
+        }
+    }
+}
 
 if (isset($_GET['cat'])) {
     $calendar .= '<input type="hidden" name="cat" value="' . $_GET['cat'] . '" />';
