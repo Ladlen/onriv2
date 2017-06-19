@@ -646,11 +646,11 @@ while ($day <= $maxdays) {
                         $dateUrlStr = interval::createDateUrlStr($_GET, $dd, $month, $year);
 
                         $cellState = interval::ifDateAlreadyReservedByCurrentUser($dd, $month, $year, $_GET);
-                        if ($cellState === 1) {
+                        if ($cellState == 1) {
                             $calendar .= interval::cellReserved($dd, false);
-                        } elseif ($cellState === 2) {
+                        } elseif ($cellState == 2) {
                             $calendar .= interval::cellReserved($dd, false, 'start_selection');
-                        } elseif ($cellState === 3) {
+                        } elseif ($cellState == 3) {
                             $calendar .= interval::cellReserved($dd, false, 'last_date_cant_reach');
                         } else {
                             $calendar .= '<a href="' . htmlspecialchars(interval::createLink($dateUrlStr)) . '" class="' . $a_class . '">'

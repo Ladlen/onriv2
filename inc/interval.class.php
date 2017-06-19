@@ -153,7 +153,7 @@ class interval
         if ($startSelection == 'start_selection') {
             $class = 'start_selection';
             $title = $GLOBALS['lang']['ordered_day_start_interval'];
-        } elseif ($startSelection == 'start_selection') {
+        } elseif ($startSelection == 'last_date_cant_reach') {
             $class = 'last_date_cant_reach';
             $title = $GLOBALS['lang']['not_accessible_date'];
         } else {
@@ -275,12 +275,12 @@ HTML;*/
 
         foreach ($intervals['f_day'] as $key => $value) {
             if (!empty($intervals['l_day'][$key])) {
-                $cIntervals[$key]['f_day'] = $intervals['f_day'][$key];
-                $cIntervals[$key]['f_month'] = $intervals['f_month'][$key];
-                $cIntervals[$key]['f_year'] = $intervals['f_year'][$key];
-                $cIntervals[$key]['l_day'] = $intervals['l_day'][$key];
-                $cIntervals[$key]['l_month'] = $intervals['l_month'][$key];
-                $cIntervals[$key]['l_year'] = $intervals['l_year'][$key];
+                $cIntervals['f_day'][$key] = $intervals['f_day'][$key];
+                $cIntervals['f_month'][$key] = $intervals['f_month'][$key];
+                $cIntervals['f_year'][$key] = $intervals['f_year'][$key];
+                $cIntervals['l_day'][$key] = $intervals['l_day'][$key];
+                $cIntervals['l_month'][$key] = $intervals['l_month'][$key];
+                $cIntervals['l_year'][$key]= $intervals['l_year'][$key];
             }
         }
 
