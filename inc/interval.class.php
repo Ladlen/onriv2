@@ -59,10 +59,16 @@ class interval
     public static function cellReserved($id, $show = true)
     {
         $s = <<<HTML
+        <div class="tdd lost_day interval">
+            <span class="bsdd" title="Зарезервированный день"><span class="sdd">$id</span></span>
+        </div>
+HTML;
+
+        /*$s = <<<HTML
         <label>
             <div class="day h_act disabled" id="b$id"><span class="day sdd">$id</span></div>
         </label>
-HTML;
+HTML;*/
 
         if ($show) {
             echo $s;
@@ -97,20 +103,20 @@ HTML;
                 self::orderDatas($dataFirst, $dataLast);
 
                 if ((($dataFirst['year'] < $year)
-                    || ($dataFirst['year'] == $year
-                        && $dataFirst['month'] < $month)
-                    || ($dataFirst['year'] == $year
-                        && $dataFirst['month'] == $month
-                        && $dataFirst['day'] < $day))
-                &&
+                        || ($dataFirst['year'] == $year
+                            && $dataFirst['month'] < $month)
+                        || ($dataFirst['year'] == $year
+                            && $dataFirst['month'] == $month
+                            && $dataFirst['day'] <= $day))
+                    &&
                     (($dataLast['year'] > $year)
                         || ($dataLast['year'] == $year
                             && $dataLast['month'] > $month)
                         || ($dataLast['year'] == $year
                             && $dataLast['month'] == $month
-                            && $dataLast['day'] > $day))
+                            && $dataLast['day'] >= $day))
                 ) {
-                    return false;
+                    return true;
                 }
 
             } else {
@@ -120,7 +126,7 @@ HTML;
                 }
             }
 
-            return true;
+            return false;
         }
     }
 

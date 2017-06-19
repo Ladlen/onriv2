@@ -458,7 +458,7 @@ while($day <= $maxdays)
     else if ($year > date('Y') || $year >= date('Y') && $month > date('m') || $year >= date('Y') && $month == date('m') && $day >= date('d')){
 
 
-        $calendar .= '<div class="tdd ">';
+        //$calendar .= '<div class="tdd ">';
 
         if(isset($_GET['day']) && $_GET['day'] == $dd) {$a_class = $a_class.' select_date';}
 
@@ -797,17 +797,22 @@ ddbl.setAttribute("class","busy_day tdd");
                 }
             }
 
-            if (interval::ifDateAlreadyReservedByCurrentUser($dd, $month, $year, $_GET)) {
+            $cellState = interval::ifDateAlreadyReservedByCurrentUser($dd, $month, $year, $_GET);
+            if ($cellState === true) {
+                $calendar .= interval::cellReserved($dd, false);
+            } elseif ($cellState === null) {
                 $calendar .= interval::cellReserved($dd, false);
             } else {
-                $calendar .= '<a href="' . $script_name . '?obj=' . $obj . $dateUrlStr . '&amp;weekday=' . $weekday . $cat_url . $ofadm_url . '#ag_calendar" class="' . $a_class . '">
+                $calendar .= '<div class="tdd">'
+                . '<a href="' . $script_name . '?obj=' . $obj . $dateUrlStr . '&amp;weekday=' . $weekday . $cat_url . $ofadm_url . '#ag_calendar" class="' . $a_class . '">
 <span class="' . $class_day . ' sdd">' . $dd . '</span>
 </a>';
+                $calendar .= '</div>';
             }
         }
 
         $calendar .= '<div class="clear"></div>';
-        $calendar .= '</div>';
+        //$calendar .= '</div>';
 
 
     } else {

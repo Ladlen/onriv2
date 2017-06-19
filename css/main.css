@@ -2851,4 +2851,8 @@ float:none!important;
     text-align: center;
 }
 
+#ag_main .lost_day.interval::before {
+    color: red !important;
+}
+
 /* /INTERVAL */
