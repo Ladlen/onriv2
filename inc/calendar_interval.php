@@ -291,7 +291,7 @@ $calendar .= '<tr><th class="calendar_top" colspan="7">';
 $calendar .= '<div class="tools_calendar">';
 
 if ($year > date('Y') || $year >= date('Y') && $month > date('m')) {
-    $calendar .= '<a href="' . $self . '?obj=' . $obj . '&amp;month=' . $last_month . '&amp;year=' . $last_year . $cat_url . $ofadm_url . '#ag_calendar" class="back_month" title="' . $lang['back_month'] . '"><i class="icon-left-open"></i></a>';
+    $calendar .= '<a href="' . $self . '?obj=' . $obj . '&amp;month=' . $last_month . '&amp;year=' . $last_year . $cat_url . $ofadm_url . '&amp;' . interval::createUrlFromDates($_GET) . '#ag_calendar" class="back_month" title="' . $lang['back_month'] . '"><i class="icon-left-open"></i></a>';
 } else {
     $calendar .= '<span class="disable_back_month"><i class="icon-left-open"></i></span>';
 }
@@ -326,7 +326,7 @@ if (isset($_GET['edit'])) {
 
 
 if ($month != date('m') || $year != date('Y')) {
-    $calendar .= '<a href="' . $self . '?obj=' . $obj . '&amp;month=' . date('m') . '&amp;year=' . date('Y') . $cat_url . $ofadm_url . '#ag_calendar" class="back_month_select" title="' . $lang['back_to_current_month'] . '"><i class="icon-history"></i></a>';
+    $calendar .= '<a href="' . $self . '?obj=' . $obj . '&amp;month=' . date('m') . '&amp;year=' . date('Y') . $cat_url . $ofadm_url . '&amp;' . interval::createUrlFromDates($_GET) . '#ag_calendar" class="back_month_select" title="' . $lang['back_to_current_month'] . '"><i class="icon-history"></i></a>';
 } else {
     $calendar .= '<span><i class="icon-history"></i></span>';
 }
@@ -363,7 +363,7 @@ $calendar .= '<div class="clear"></div>
 //---------------------------------------------------------/select form
 
 
-$calendar .= '<a href="' . $self . '?obj=' . $obj . '&amp;month=' . $next_month . '&amp;year=' . $next_year . $cat_url . $ofadm_url . '#ag_calendar" class="next_month" title="' . $lang['next_month'] . '"><i class="icon-right-open"></i></a>';
+$calendar .= '<a href="' . $self . '?obj=' . $obj . '&amp;month=' . $next_month . '&amp;year=' . $next_year . $cat_url . $ofadm_url . '&amp;' . interval::createUrlFromDates($_GET) . '#ag_calendar" class="next_month" title="' . $lang['next_month'] . '"><i class="icon-right-open"></i></a>';
 
 $calendar .= '<div class="clear"></div></div>';
 $calendar .= '</th></tr>';

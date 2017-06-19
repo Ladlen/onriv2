@@ -2,7 +2,7 @@
 
 class interval
 {
-    public static $getValues = ['first_day', 'last_day', 'first_month', 'last_month', 'first_year', 'last_year'];
+    public static $getValues = ['f_day', 'l_day', 'f_month', 'l_month', 'f_year', 'l_year'];
 
     public static function createLink($dateUrlStr)
     {
@@ -22,47 +22,47 @@ class interval
     {
         $dateUrlStr = '';
 
-        if (empty($dates['first_day'])) {
+        if (empty($dates['f_day'])) {
             if (!$excludeWithStart) {
-                $dateUrlStr = '&first_day[0]=' . $dd . '&first_month[0]=' . $month . '&first_year[0]=' . $year;
+                $dateUrlStr = '&f_day[0]=' . $dd . '&f_month[0]=' . $month . '&f_year[0]=' . $year;
             }
         } else {
             $lastDayWasEmpty = false;
             $cLast = 0;
-            foreach ($dates['first_day'] as $c => $data) {
+            foreach ($dates['f_day'] as $c => $data) {
 
                 if ($excludeWithStart
-                    && $dates['first_day'][$c] == $excludeWithStart['first_day']
-                    && $dates['first_month'][$c] == $excludeWithStart['first_month']
-                    && $dates['first_year'][$c] == $excludeWithStart['first_year']
+                    && $dates['f_day'][$c] == $excludeWithStart['f_day']
+                    && $dates['f_month'][$c] == $excludeWithStart['f_month']
+                    && $dates['f_year'][$c] == $excludeWithStart['f_year']
                 ) {
                     continue;
                 }
 
-                if (empty($dates['last_day'][$c])) {
-                    $dateUrlStr .= "&first_day[$c]={$dates['first_day'][$c]}&first_month[$c]={$dates['first_month'][$c]}&first_year[$c]={$dates['first_year'][$c]}";
+                if (empty($dates['l_day'][$c])) {
+                    $dateUrlStr .= "&f_day[$c]={$dates['f_day'][$c]}&f_month[$c]={$dates['f_month'][$c]}&f_year[$c]={$dates['f_year'][$c]}";
                     if (!$excludeWithStart) {
-                        $dateUrlStr .= "&last_day[$c]=$dd&last_month[$c]=$month&last_year[$c]=$year";
+                        $dateUrlStr .= "&l_day[$c]=$dd&l_month[$c]=$month&l_year[$c]=$year";
                     }
                     $lastDayWasEmpty = true;
                 } else {
-                    $dataFirst['day'] = $dates['first_day'][$c];
-                    $dataFirst['month'] = $dates['first_month'][$c];
-                    $dataFirst['year'] = $dates['first_year'][$c];
-                    $dataLast['day'] = $dates['last_day'][$c];
-                    $dataLast['month'] = $dates['last_month'][$c];
-                    $dataLast['year'] = $dates['last_year'][$c];
+                    $dataFirst['day'] = $dates['f_day'][$c];
+                    $dataFirst['month'] = $dates['f_month'][$c];
+                    $dataFirst['year'] = $dates['f_year'][$c];
+                    $dataLast['day'] = $dates['l_day'][$c];
+                    $dataLast['month'] = $dates['l_month'][$c];
+                    $dataLast['year'] = $dates['l_year'][$c];
                     interval::orderDatas($dataFirst, $dataLast);
 
-                    $dateUrlStr .= "&first_day[$c]=$dataFirst[day]&first_month[$c]=$dataFirst[month]&first_year[$c]=$dataFirst[year]"
-                        . "&last_day[$c]=$dataLast[day]&last_month[$c]=$dataLast[month]&last_year[$c]=$dataLast[year]";
+                    $dateUrlStr .= "&f_day[$c]=$dataFirst[day]&f_month[$c]=$dataFirst[month]&f_year[$c]=$dataFirst[year]"
+                        . "&l_day[$c]=$dataLast[day]&l_month[$c]=$dataLast[month]&l_year[$c]=$dataLast[year]";
                 }
 
                 $cLast = $c;
             }
             if (!$lastDayWasEmpty && !$excludeWithStart) {
                 $nextC = $cLast + 1;
-                $dateUrlStr .= "&first_day[$nextC]=$dd&first_month[$nextC]=$month&first_year[$nextC]=$year";
+                $dateUrlStr .= "&f_day[$nextC]=$dd&f_month[$nextC]=$month&f_year[$nextC]=$year";
             }
         }
 
@@ -85,9 +85,9 @@ class interval
         global $dd, $month, $year;
         $dateUrlStr = self::createDateUrlStr($dates, $dd, $month, $year,
             [
-                'first_day' => $dates['first_day'][$excludeIndex],
-                'first_month' => $dates['first_month'][$excludeIndex],
-                'first_year' => $dates['first_year'][$excludeIndex]
+                'f_day' => $dates['f_day'][$excludeIndex],
+                'f_month' => $dates['f_month'][$excludeIndex],
+                'f_year' => $dates['f_year'][$excludeIndex]
             ]);
         $href = self::createLink($dateUrlStr);
         $s = "<a class='btn_remove_interval' title='{$GLOBALS['lang']['delete']}' href='" . htmlspecialchars($href) . "'>X</a>";
@@ -182,18 +182,18 @@ HTML;*/
      */
     public static function ifDateAlreadyReservedByCurrentUser($day, $month, $year, $intervals)
     {
-        if (empty($intervals['first_day'])) {
+        if (empty($intervals['f_day'])) {
             return false;
         }
 
-        foreach ($intervals['first_day'] as $key => $value) {
-            if (!empty($intervals['last_day'][$key])) {
-                $dataFirst['day'] = $intervals['first_day'][$key];
-                $dataFirst['month'] = $intervals['first_month'][$key];
-                $dataFirst['year'] = $intervals['first_year'][$key];
-                $dataLast['day'] = $intervals['last_day'][$key];
-                $dataLast['month'] = $intervals['last_month'][$key];
-                $dataLast['year'] = $intervals['last_year'][$key];
+        foreach ($intervals['f_day'] as $key => $value) {
+            if (!empty($intervals['l_day'][$key])) {
+                $dataFirst['day'] = $intervals['f_day'][$key];
+                $dataFirst['month'] = $intervals['f_month'][$key];
+                $dataFirst['year'] = $intervals['f_year'][$key];
+                $dataLast['day'] = $intervals['l_day'][$key];
+                $dataLast['month'] = $intervals['l_month'][$key];
+                $dataLast['year'] = $intervals['l_year'][$key];
                 self::orderDatas($dataFirst, $dataLast);
 
                 if ((($dataFirst['year'] < $year)
@@ -215,7 +215,7 @@ HTML;*/
 
             } else {
                 // Промежуток не установлен - проверяем только наличие выбранной начальной даты
-                if ($intervals['first_day'][$key] == $day && $intervals['first_month'][$key] == $month && $intervals['first_year'][$key] == $year) {
+                if ($intervals['f_day'][$key] == $day && $intervals['f_month'][$key] == $month && $intervals['f_year'][$key] == $year) {
                     return null;
                 }
             }
