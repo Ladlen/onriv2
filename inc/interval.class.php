@@ -410,14 +410,18 @@ HTML;*/
         return implode('||', $ret);
     }
 
-    /*public static function intervalUlList($intervals, $show = true)
+    public static function intervalUlList($intervals, $show = true)
     {
+        if (empty($intervals['f_day'])) {
+            return '';
+        }
+
         $s = "<ul>\n";
 
         foreach ($intervals['f_day'] as $key => $value) {
-            $s .= '<li>';
+            $s .= "<li>\n";
             if (empty($intervals['l_day'][$key])) {
-
+                $s .= "{$intervals['f_year'][$key]}-{$intervals['f_month'][$key]}-{$intervals['f_day'][$key]}";
             } else {
                 $dataFirst['day'] = $intervals['f_day'][$key];
                 $dataFirst['month'] = $intervals['f_month'][$key];
@@ -427,13 +431,10 @@ HTML;*/
                 $dataLast['year'] = $intervals['l_year'][$key];
                 self::orderDatas($dataFirst, $dataLast);
 
-                $dtFirst = new DateTime("$dataFirst[year]-$dataFirst[month]-$dataFirst[day]");
-                $dtLast = new DateTime("$dataLast[year]-$dataLast[month]-$dataLast[day]");
-                $dtDiff = $dtFirst->diff($dtLast);
-                $dtDiff->format('%R'); // use for point out relation: smaller/greater
-                $daysTotal += $dtDiff->days + 1;
+                $s .= "{$intervals['f_year'][$key]} " . $GLOBALS['lang_monts_r'][$intervals['f_month'][$key]] . " {$intervals['f_day'][$key]}"
+                    . " - {$intervals['l_year'][$key]} " . $GLOBALS['lang_monts_r'][$intervals['l_month'][$key]] . " {$intervals['l_day'][$key]}\n";
             }
-            $s .= '</li>';
+            $s .= "</li>\n";
         }
 
         $s .= "</ul>\n";
@@ -442,5 +443,51 @@ HTML;*/
             echo $s;
         }
         return $s;
-    }*/
+    }
+
+    public static function formatStoredInterval($interval, $show = true)
+    {
+        $s = '';
+
+        //TODO: упорядочить по возрастанию даты
+        $dv_arr = explode('-', $interval);
+        if (isset($dv_arr[0])) {
+            $s .= self::formatStoredDate($dv_arr[0], false);
+            if (isset($dv_arr[1])) {
+                $s .= ' - ' . self::formatStoredDate($dv_arr[1], false);
+            }
+        }
+
+        if ($show) {
+            echo $s;
+        }
+        return $s;
+    }
+
+    public static function formatStoredDate($date, $show = true)
+    {
+        $s = '';
+
+        $db_day = '';
+        $db_month = '0';
+        $db_year = '';
+
+        $dv_arr = explode('.', $date);
+        if (isset($dv_arr[0])) {
+            $db_year = $dv_arr[0];
+        }
+        if (isset($dv_arr[1])) {
+            $db_month = $dv_arr[1];
+        }
+        if (isset($dv_arr[2])) {
+            $db_day = $dv_arr[2];
+        }
+
+        $s .= $db_day . ' ' . $GLOBALS['lang_monts_r'][$db_month] . ' ' . $db_year;
+
+        if ($show) {
+            echo $s;
+        }
+        return $s;
+    }
 }

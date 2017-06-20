@@ -444,7 +444,7 @@ $disp_obj_cat_arr = explode('&&', $add_name_obj);
 if (isset($disp_obj_cat_arr[0])) {$name_obj_done = $disp_obj_cat_arr[0];} else {$name_obj_done = '';}
 if (isset($disp_obj_cat_arr[1])) {$name_cat_done = $disp_obj_cat_arr[1];} else {$name_cat_done = '';}
 
-if($provide_obj == 'daily') {  // ---------------------------- Daily
+if($provide_obj == 'daily' || $provide_obj == 'daily_interval') {  // ---------------------------- Daily
 
 
 
@@ -457,18 +457,33 @@ if(!empty($diff_time)) {
 if ($time_obj_cl_arr == $select_time_arr) {	} else { //===========EDIT
 $stop_booking = '1';	
 //=============================================DISPLAY BOOKING DATES IF dates are already busy DAILY
-echo '<div class="stop_booking error_mess"><h4>'.$lang['dates_busy'].'</h4><ul>';
-$db_day = '';
-$db_month = '0';
-$db_year = '';
-foreach ($diff_time as $dk => $dv) {
-$dv_arr = explode('.', $dv);
-if (isset($dv_arr[0])) {$db_day = $dv_arr[0];}
-if (isset($dv_arr[1])) {$db_month = $dv_arr[1];}
-if (isset($dv_arr[2])) {$db_year = $dv_arr[2];}
-echo '<li>'.$db_day.' '.$lang_monts_r[$db_month].' '.$db_year.'</li>';
-}	
-echo '</ul></div>'; } //=============EDIT
+	if($provide_obj == 'daily_interval') {
+		echo '<div class="stop_booking error_mess"><h4>' . $lang['dates_busy'] . '</h4><ul>';
+		foreach ($diff_time as $dk => $dv) {
+			echo '<li>' . interval::formatStoredInterval($dv, false) . '</li>';
+		}
+		echo '</ul></div>';
+	} else {
+		echo '<div class="stop_booking error_mess"><h4>' . $lang['dates_busy'] . '</h4><ul>';
+		$db_day = '';
+		$db_month = '0';
+		$db_year = '';
+		foreach ($diff_time as $dk => $dv) {
+			$dv_arr = explode('.', $dv);
+			if (isset($dv_arr[0])) {
+				$db_day = $dv_arr[0];
+			}
+			if (isset($dv_arr[1])) {
+				$db_month = $dv_arr[1];
+			}
+			if (isset($dv_arr[2])) {
+				$db_year = $dv_arr[2];
+			}
+			echo '<li>' . $db_day . ' ' . $lang_monts_r[$db_month] . ' ' . $db_year . '</li>';
+		}
+		echo '</ul></div>';
+	}
+} //=============EDIT
 
 
 }//empty 
@@ -496,20 +511,24 @@ echo '<tr><th>'.$lang['obj_name'].':</th><td>'.$disp_obj_cat_arr[0];
 if (!empty($disp_obj_cat_arr[1])) {echo '<br /><small>'.$disp_obj_cat_arr[1].'</small>';}
 echo '</td></tr>';
 
-
-
-echo '<tr><th>'.$lang['booking_dates'].':</th><td>'; 
-$b_day = '';
-$b_month = '0';
-$b_year = '';
-foreach ($select_time_arr as $bk => $bv) {
-$bv_arr = explode('.', $bv);
-if (isset($bv_arr[0])) {$b_day = $bv_arr[0];}
-if (isset($bv_arr[1])) {$b_month = $bv_arr[1];}
-if (isset($bv_arr[2])) {$b_year = $bv_arr[2];}
-echo '<li>'.$b_day.' '.$lang_monts_r[$b_month].' '.$b_year.'</li>';
-}	
-echo'</td></tr>';
+if($provide_obj == 'daily_interval') {
+	echo '<tr><th>'.$lang['booking_intervals'].':</th><td>'
+		. interval::intervalUlList($_GET)
+		. '</td></tr>';
+} else {
+	echo '<tr><th>'.$lang['booking_dates'].':</th><td>';
+    $b_day = '';
+    $b_month = '0';
+    $b_year = '';
+    foreach ($select_time_arr as $bk => $bv) {
+    $bv_arr = explode('.', $bv);
+    if (isset($bv_arr[0])) {$b_day = $bv_arr[0];}
+    if (isset($bv_arr[1])) {$b_month = $bv_arr[1];}
+    if (isset($bv_arr[2])) {$b_year = $bv_arr[2];}
+    echo '<li>'.$b_day.' '.$lang_monts_r[$b_month].' '.$b_year.'</li>';
+    }
+    echo'</td></tr>';
+}
 
 if(!empty($add_mail))
 {echo '<tr><th>'.$lang['mail'].':</th><td>'.$add_mail.'</td></tr>';}
@@ -613,7 +632,9 @@ setTimeout (function() {document.getElementById("ag_arrow_top").click();}, 200);
 }//----------------------------------------------------/display daily order
 
 
-} else { // --------------------------------------------------------------- Hourly
+} else/*if ($provide_obj == 'daily_interval') {
+	//echo '<tr><th>' . $lang['booking_intervals'] . ':</th><td>' . 'Промежутки времени' . '</td></tr>';
+} else*/ { // --------------------------------------------------------------- Hourly
 	
 $diff_time = array_intersect($ch_time_arr, $select_time_arr); 
 if(!empty($diff_time)) {
@@ -670,13 +691,10 @@ if (isset($disp_date_arr[0])) {$b_day = $disp_date_arr[0];}
 if (isset($disp_date_arr[1])) {$b_month = $disp_date_arr[1];}
 if (isset($disp_date_arr[2])) {$b_year = $disp_date_arr[2];}
 
-if ($provide_obj == 'daily_interval') {
-	echo '<tr><th>' . $lang['booking_intervals'] . ':</th><td>' . 'Промежутки времени' . '</td></tr>';
-} else {
-	echo '<tr><th>' . $lang['date'] . ':</th><td><b>' . $b_day . ' ' . $lang_monts_r[$b_month] . ' ' . $b_year . '</b></td></tr>';
+echo '<tr><th>' . $lang['date'] . ':</th><td><b>' . $b_day . ' ' . $lang_monts_r[$b_month] . ' ' . $b_year . '</b></td></tr>';
 
-	echo '<tr><th>' . $lang['booking_times'] . ':</th><td>';
-}
+echo '<tr><th>' . $lang['booking_times'] . ':</th><td>';
+
 
 $b_hs = '';
 $b_ms = '';
