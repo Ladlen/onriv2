@@ -529,10 +529,10 @@ HTML;*/
     {
         $verDate = new DateTime("$day.$month.$year");
 
-        $intervalList = explode($intervals, '||');
+        $intervalList = explode('||', $intervals);
         $intervalList = array_filter($intervalList);
         foreach ($intervalList as $elem) {
-            $dates = explode($elem, '-');
+            $dates = explode('-', $elem);
             $dateFrom = new DateTime($dates[0]);
             if (isset($dates[1])) {
                 $dateTo = new DateTime($dates[1]);

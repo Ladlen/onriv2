@@ -532,7 +532,6 @@ while ($day <= $maxdays) {
     else if (($provide_obj == 'daily_interval' && interval::ifDateInIntervals($check_time_obj_str, $dd, $month, $year))
         || ($provide_obj != 'daily_interval' && preg_match('/' . $dd . '.' . $month . '.' . $year . '.' . $weekday . '/i', $check_time_obj_str))) {
 
-
         if ($year > date('Y') || $year >= date('Y') && $month > date('m') || $year >= date('Y') && $month == date('m') && $day >= date('d')) {
 // lost busy day
             $calendar .= '<div class="busy_day tdd" title="' . $lang['day_busy'] . '">
