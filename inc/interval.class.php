@@ -524,4 +524,36 @@ HTML;*/
 
         return $modUri;
     }
+
+    public static function ifDateInIntervals($intervals, $day, $month, $year)
+    {
+        $verDate = new DateTime("$day.$month.$year");
+
+        $intervalList = explode($intervals, '||');
+        $intervalList = array_filter($intervalList);
+        foreach ($intervalList as $elem) {
+            $dates = explode($elem, '-');
+            $dateFrom = new DateTime($dates[0]);
+            if (isset($dates[1])) {
+                $dateTo = new DateTime($dates[1]);
+
+                if ($dateFrom > $dateTo) {
+                    $dtTmp = $dateFrom;
+                    $dateFrom = $dateTo;
+                    $dateTo = $dtTmp;
+                }
+
+                if ($verDate >= $dateFrom && $verDate <= $dateTo) {
+                    return true;
+                }
+            } else {
+                // Не установлена конечная дата диапазона - проверяем только первый день на совпадение.
+                if ($verDate == $dateFrom) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 }

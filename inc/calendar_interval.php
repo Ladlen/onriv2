@@ -529,7 +529,8 @@ while ($day <= $maxdays) {
 </div>';
         }
     } //===========================BUSY DAY
-    else if (preg_match('/' . $dd . '.' . $month . '.' . $year . '.' . $weekday . '/i', $check_time_obj_str)) {
+    else if (($provide_obj == 'daily_interval' && interval::ifDateInIntervals($check_time_obj_str, $dd, $month, $year))
+        || ($provide_obj != 'daily_interval' && preg_match('/' . $dd . '.' . $month . '.' . $year . '.' . $weekday . '/i', $check_time_obj_str))) {
 
 
         if ($year > date('Y') || $year >= date('Y') && $month > date('m') || $year >= date('Y') && $month == date('m') && $day >= date('d')) {
