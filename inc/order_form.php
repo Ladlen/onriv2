@@ -119,7 +119,7 @@ if(isset($_POST['keystring']) && isset($_SESSION['captcha_keystring']) && strtol
 
 //-----------TIME/DATE HOURLY/DAILY
 $add_time = '';
-if($provide_obj == 'daily') { 
+if($provide_obj == 'daily') {
 
 
 
@@ -145,6 +145,12 @@ $add_time .= $sep_dd.implode('||', $_POST['dates_next']);} //no empty
 if (!isset($_POST['dates'])) {$ERROR['dates'] = $lang['error_select_dates']; }
 }
 
+} elseif($provide_obj == 'daily_interval') {
+	if (empty($_GET['l_day'])) {
+		$ERROR['time'] = $lang['error_select_time'];
+	} else {
+		$add_time = interval::serialize($_GET);
+	}
 } else {  //hourly
 	
 if (isset($_POST['time'])) {
@@ -170,8 +176,11 @@ $add_time = str_replace("'",'',$add_time);
 $id_obj = $obj;
 
 //-----------Date
-if($provide_obj == 'daily') { $add_date = '0';} else {
-$add_date = $_GET['day'].'.'.$month.'.'.$year.'.'.$_GET['weekday']; }
+if($provide_obj == 'daily' || $provide_obj == 'daily_interval') {
+	$add_date = '0';
+} else {
+	$add_date = $_GET['day'].'.'.$month.'.'.$year.'.'.$_GET['weekday'];
+}
 
 //-----------Name OBJ
 if (!empty($name_cat_disp)) { $add_name_obj = $name_obj.'&&'.$name_cat_disp; } else { $add_name_obj = $name_obj.'&&'; }
@@ -298,6 +307,11 @@ $total_price = '0.0999'; break;
 if($total_price != '0.0999') {
 $total_price = $total_price*$ispots;
 $total_price = round($total_price, 2);
+}
+
+if ($provide_obj == 'daily_interval') {
+	$daysOrdered = interval::getTotalDays($_GET);
+	$total_price = $daysOrdered * $daily_price_obj;
 }
 
 
@@ -656,9 +670,13 @@ if (isset($disp_date_arr[0])) {$b_day = $disp_date_arr[0];}
 if (isset($disp_date_arr[1])) {$b_month = $disp_date_arr[1];}
 if (isset($disp_date_arr[2])) {$b_year = $disp_date_arr[2];}
 
-echo '<tr><th>'.$lang['date'].':</th><td><b>'.$b_day.' '.$lang_monts_r[$b_month].' '.$b_year.'</b></td></tr>';
+if ($provide_obj == 'daily_interval') {
+	echo '<tr><th>' . $lang['booking_intervals'] . ':</th><td>' . 'Промежутки времени' . '</td></tr>';
+} else {
+	echo '<tr><th>' . $lang['date'] . ':</th><td><b>' . $b_day . ' ' . $lang_monts_r[$b_month] . ' ' . $b_year . '</b></td></tr>';
 
-echo '<tr><th>'.$lang['booking_times'].':</th><td>'; 
+	echo '<tr><th>' . $lang['booking_times'] . ':</th><td>';
+}
 
 $b_hs = '';
 $b_ms = '';

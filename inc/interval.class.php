@@ -347,7 +347,7 @@ HTML;*/
         return false;
     }
 
-    public static function findCompleteIntervals($intervals)
+    public static function findCompleteIntervals($intervals, $extractNotComplete = false)
     {
         $cIntervals = [];
 
@@ -363,6 +363,10 @@ HTML;*/
                 $cIntervals['l_day'][$key] = $intervals['l_day'][$key];
                 $cIntervals['l_month'][$key] = $intervals['l_month'][$key];
                 $cIntervals['l_year'][$key] = $intervals['l_year'][$key];
+            } elseif ($extractNotComplete) {
+                $cIntervals['f_day'][$key] = $intervals['f_day'][$key];
+                $cIntervals['f_month'][$key] = $intervals['f_month'][$key];
+                $cIntervals['f_year'][$key] = $intervals['f_year'][$key];
             }
         }
 
@@ -383,4 +387,60 @@ HTML;*/
             $dataLast = $tmp;
         }
     }
+
+    public static function serialize($intervals)
+    {
+        //return serialize(self::findCompleteIntervals($intervals, true));
+
+        if (empty($intervals['f_day'])) {
+            return '';
+        }
+
+        $ret = [];
+
+        foreach ($intervals['f_day'] as $key => $value) {
+            $s = "{$intervals['f_year'][$key]}.{$intervals['f_month'][$key]}.{$intervals['f_day'][$key]}";
+            if (!empty($intervals['l_day'][$key])) {
+                $s .= "-{$intervals['l_year'][$key]}.{$intervals['l_month'][$key]}.{$intervals['l_day'][$key]}";
+            }
+
+            $ret[] = $s;
+        }
+
+        return implode('||', $ret);
+    }
+
+    /*public static function intervalUlList($intervals, $show = true)
+    {
+        $s = "<ul>\n";
+
+        foreach ($intervals['f_day'] as $key => $value) {
+            $s .= '<li>';
+            if (empty($intervals['l_day'][$key])) {
+
+            } else {
+                $dataFirst['day'] = $intervals['f_day'][$key];
+                $dataFirst['month'] = $intervals['f_month'][$key];
+                $dataFirst['year'] = $intervals['f_year'][$key];
+                $dataLast['day'] = $intervals['l_day'][$key];
+                $dataLast['month'] = $intervals['l_month'][$key];
+                $dataLast['year'] = $intervals['l_year'][$key];
+                self::orderDatas($dataFirst, $dataLast);
+
+                $dtFirst = new DateTime("$dataFirst[year]-$dataFirst[month]-$dataFirst[day]");
+                $dtLast = new DateTime("$dataLast[year]-$dataLast[month]-$dataLast[day]");
+                $dtDiff = $dtFirst->diff($dtLast);
+                $dtDiff->format('%R'); // use for point out relation: smaller/greater
+                $daysTotal += $dtDiff->days + 1;
+            }
+            $s .= '</li>';
+        }
+
+        $s .= "</ul>\n";
+
+        if ($show) {
+            echo $s;
+        }
+        return $s;
+    }*/
 }

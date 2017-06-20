@@ -394,6 +394,7 @@ $lang = array(
 'order_ok_title' => 'the ordering process is successfully completed',
 'booking_dates' => 'The selected date',
 'booking_times' => 'The selected time',
+'booking_intervals' => 'The selected intervals',
 'to_pay' => 'Payment',
 'print' => 'Print',
 'order_in' => 'It',
