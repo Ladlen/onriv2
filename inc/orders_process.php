@@ -608,6 +608,17 @@ document.location.href=\'index.php?obj=' . $_GET['obj'] . '&edit=' . $id_order_o
 
 // no date
                             } //hourly
+                            else {
+                                // Проверка на daily_interval
+                                if ($time_obj_cl_Exploded = explode('||', $time_obj_cl)) {
+                                    $time_obj_cl_Exploded = (array)$time_obj_cl_Exploded;
+                                    if ($time_obj_cl_ExplodedByDates = explode('-', $time_obj_cl_Exploded[0])) {
+                                        if (count($time_obj_cl_ExplodedByDates) == 2) {
+                                            echo "<script>document.location.href=index.php?obj=$_GET[obj];</script>";
+                                        }
+                                    }
+                                }
+                            }
 //===/date
 
 
@@ -627,7 +638,7 @@ document.location.href=\'index.php?obj=' . $_GET['obj'] . '&edit=' . $id_order_o
                                 }
 
                             } //hourly
-                            else { //daily
+                            else { //daily or daily_interval
                                 $minus_time .= $time_obj_cl;
                                 $time_obj_cl_arr = explode('||', $time_obj_cl);
 

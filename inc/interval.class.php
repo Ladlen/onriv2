@@ -399,9 +399,13 @@ HTML;*/
         $ret = [];
 
         foreach ($intervals['f_day'] as $key => $value) {
-            $s = "{$intervals['f_year'][$key]}.{$intervals['f_month'][$key]}.{$intervals['f_day'][$key]}";
+            /*$s = "{$intervals['f_year'][$key]}.{$intervals['f_month'][$key]}.{$intervals['f_day'][$key]}";
             if (!empty($intervals['l_day'][$key])) {
                 $s .= "-{$intervals['l_year'][$key]}.{$intervals['l_month'][$key]}.{$intervals['l_day'][$key]}";
+            }*/
+            $s = "{$intervals['f_day'][$key]}.{$intervals['f_month'][$key]}.{$intervals['f_year'][$key]}";
+            if (!empty($intervals['l_day'][$key])) {
+                $s .= "-{$intervals['l_day'][$key]}.{$intervals['l_month'][$key]}.{$intervals['l_year'][$key]}";
             }
 
             $ret[] = $s;
@@ -431,8 +435,8 @@ HTML;*/
                 $dataLast['year'] = $intervals['l_year'][$key];
                 self::orderDatas($dataFirst, $dataLast);
 
-                $s .= "{$intervals['f_year'][$key]} " . $GLOBALS['lang_monts_r'][$intervals['f_month'][$key]] . " {$intervals['f_day'][$key]}"
-                    . " - {$intervals['l_year'][$key]} " . $GLOBALS['lang_monts_r'][$intervals['l_month'][$key]] . " {$intervals['l_day'][$key]}\n";
+                $s .= "{$dataFirst['day']} {$GLOBALS['lang_monts_r'][$dataFirst['month']]} {$dataFirst['year']}"
+                    . " - {$dataLast['day']} {$GLOBALS['lang_monts_r'][$dataLast['month']]} {$dataLast['year']}\n";
             }
             $s .= "</li>\n";
         }
