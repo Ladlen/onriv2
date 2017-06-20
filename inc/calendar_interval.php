@@ -645,7 +645,7 @@ while ($day <= $maxdays) {
 
                         $dateUrlStr = interval::createDateUrlStr($_GET, $dd, $month, $year);
 
-                        $cellState = interval::ifDateAlreadyReservedByCurrentUser($dd, $month, $year, $_GET);
+                        $cellState = interval::getDateStatus($dd, $month, $year, $_GET, $check_time_obj_str);
                         if ($cellState == 1) {
                             $calendar .= interval::cellReserved($dd, false);
                         } elseif ($cellState == 2) {

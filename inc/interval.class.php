@@ -242,10 +242,6 @@ HTML;
             $class = '';
             $title = $GLOBALS['lang']['ordered_day'];
         }
-        /*$class = $startSelection == 'start_selection' ? 'start_selection' : '';
-        $title = $startSelection == 'start_selection' ? $GLOBALS['lang']['ordered_day_start_interval'] : $GLOBALS['lang']['ordered_day'];
-        $class = $startSelection == 'last_date_cant_reach' ? 'last_date_cant_reach' : '';
-        $title = $startSelection == 'last_date_cant_reach' ? $GLOBALS['lang']['ordered_day_start_interval'] : $GLOBALS['lang']['ordered_day'];*/
         $s = <<<HTML
         <div class="tdd lost_day interval $class">
             <span class="bsdd" title="$title"><span class="sdd">$id</span></span>
@@ -265,19 +261,21 @@ HTML;*/
     }
 
     /**
-     * Возвращает false если дата свободна, true если уже забронирована, null если при бронировании установлена
-     * только первая дата промежутка.
+     * Возвращает статус даты (ячейки даты).
      *
-     * Возвращает false если дата свободна, 1 если уже забронирована, 2 если при бронировании установлена
-     * только первая дата промежутка, 3 если текущая дата имеет препятствие на пути к первой установленной дате.
+     * Возвращает false если дата свободна;
+     * 1 если уже забронирована;
+     * 2 если дата - начальная дата промежутка, и конечная дата промежутка не установлена;
+     * 3 если дата имеет препятствие на пути к первой установленной дате.
      *
-     * @param $day
-     * @param $month
-     * @param $year
-     * @param $intervals
-     * @return bool|null
+     * @param string $day       - день проверяемой даты
+     * @param string $month     - месяц проверяемой даты
+     * @param string $year      - год проверяемой даты
+     * @param array $intervals  - интервалы из $_GET (т.е. только подготавливаются к установке)
+     * @param string $orderedIntervals - уже установленные интервалы
+     * @return bool|int
      */
-    public static function ifDateAlreadyReservedByCurrentUser($day, $month, $year, $intervals)
+    public static function getDateStatus($day, $month, $year, $intervals, $orderedIntervals)
     {
         if (empty($intervals['f_day'])) {
             return false;
@@ -330,15 +328,21 @@ HTML;*/
 
                 $cIntervals = self::findCompleteIntervals($intervals);
                 while ($dtFirst < $dtLast) {
-                    if (self::ifDateAlreadyReservedByCurrentUser(
+                    if (self::getDateStatus(
                             $dtFirst->format('d'),
                             $dtFirst->format('m'),
                             $dtFirst->format('Y'),
-                            $cIntervals
+                            $cIntervals,
+                            $orderedIntervals
                         ) != false
                     ) {
                         return 3;
                     }
+
+                    if (self::ifDateInIntervals($orderedIntervals, $dtFirst->format('d'), $dtFirst->format('m'), $dtFirst->format('Y'))) {
+                        return 3;
+                    }
+
                     $dtFirst->modify('+1 day');
                 }
             }
