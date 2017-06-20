@@ -46,10 +46,12 @@ require_once 'interval.class.php';
 </div>
 
 <script>
-    jQuery(function () {
-        <?php if (!empty($_GET['l_day'])): ?>
-        jQuery("#submit").attr("disabled", false);
-        <?php endif ?>
+    jQuery(function ($) {
+        <?php if (empty($_GET['l_day'])): ?>
+        $("#submit").attr("disabled", true);
+        <?php else: ?>
+        $("#submit").attr("disabled", false);
+        <?php endif; ?>
     });
     /*    function startNewInterval() {
 

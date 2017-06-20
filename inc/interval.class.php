@@ -217,7 +217,7 @@ HTML;
                 $dtLast = new DateTime("$dataLast[year]-$dataLast[month]-$dataLast[day]");
                 $dtDiff = $dtFirst->diff($dtLast);
                 $dtDiff->format('%R'); // use for point out relation: smaller/greater
-                $daysTotal += $dtDiff->days;
+                $daysTotal += $dtDiff->days + 1;
             }
         }
 
