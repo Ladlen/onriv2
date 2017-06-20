@@ -494,4 +494,34 @@ HTML;*/
         }
         return $s;
     }
+
+    public static function unsetParamsFromUri($uri)
+    {
+        $parsedUrl = parse_url($uri);
+
+        parse_str($parsedUrl['query'], $modUri);
+
+        if (isset($modUri['f_day'])) {
+            unset($modUri['f_day']);
+        }
+        if (isset($modUri['f_month'])) {
+            unset($modUri['f_month']);
+        }
+        if (isset($modUri['f_year'])) {
+            unset($modUri['f_year']);
+        }
+        if (isset($modUri['l_day'])) {
+            unset($modUri['l_day']);
+        }
+        if (isset($modUri['l_month'])) {
+            unset($modUri['l_month']);
+        }
+        if (isset($modUri['l_year'])) {
+            unset($modUri['l_year']);
+        }
+
+        $modUri = $parsedUrl['path'] . '?' . http_build_query($modUri);
+
+        return $modUri;
+    }
 }

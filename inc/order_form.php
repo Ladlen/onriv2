@@ -7,7 +7,11 @@ if (!isset($index)) {die;} ?>
 
 <?php
 
-
+if ($provide_obj == 'daily_interval') {
+	$requestUri = interval::unsetParamsFromUri($_SERVER['REQUEST_URI']);
+} else {
+	$requestUri = '';
+}
 
 $spots_for_edit = '0';
 
@@ -499,7 +503,7 @@ echo '<div class="print_order">';
 
 echo '<h4>'.$add_client.', '.$lang['order_ok_title'].'</h4>';
 
-echo '<a href="http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'" class="exit_order_list_top" title="'.$lang['close'].'"><i class="icon-ok"></i></a>';
+echo '<a href="http://'.$_SERVER['HTTP_HOST'].$requestUri.'" class="exit_order_list_top" title="'.$lang['close'].'"><i class="icon-ok"></i></a>';
 
 echo '<table><tbody>';
 
@@ -611,8 +615,8 @@ echo '</div>';
 
 
 echo '<div class="bot_order">
-<a href="http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'" class="exit_order_list"><i class="icon-ok-squared"></i> '.$lang['close'].'</a>
-<a href="http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'" id="to_print" class="print_go"><i class="icon-print-2"></i> '.$lang['print'].'</a>
+<a href="http://'.$_SERVER['HTTP_HOST'].$requestUri.'" class="exit_order_list"><i class="icon-ok-squared"></i> '.$lang['close'].'</a>
+<a href="http://'.$_SERVER['HTTP_HOST'].$requestUri.'" id="to_print" class="print_go"><i class="icon-print-2"></i> '.$lang['print'].'</a>
 <div class="clear"></div>
 </div>';
 
@@ -674,7 +678,7 @@ echo '<div class="print_order">';
 
 echo '<h4>'.$add_client.', '.$lang['order_ok_title'].'</h4>';
 
-echo '<a href="http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'" class="exit_order_list_top" title="'.$lang['close'].'"><i class="icon-ok"></i></a>';
+echo '<a href="http://'.$_SERVER['HTTP_HOST'].$requestUri.'" class="exit_order_list_top" title="'.$lang['close'].'"><i class="icon-ok"></i></a>';
 
 echo '<table><tbody>';
 
@@ -819,8 +823,8 @@ echo '</div>';
 
 
 echo '<div class="bot_order">
-<a href="http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'" class="exit_order_list"><i class="icon-ok-squared"></i> '.$lang['close'].'</a>
-<a href="http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'" id="to_print" class="print_go"><i class="icon-print-2"></i> '.$lang['print'].'</a>
+<a href="http://'.$_SERVER['HTTP_HOST'].$requestUri.'" class="exit_order_list"><i class="icon-ok-squared"></i> '.$lang['close'].'</a>
+<a href="http://'.$_SERVER['HTTP_HOST'].$requestUri.'" id="to_print" class="print_go"><i class="icon-print-2"></i> '.$lang['print'].'</a>
 <div class="clear"></div>
 </div>';
 

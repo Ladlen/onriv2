@@ -608,7 +608,7 @@ document.location.href=\'index.php?obj=' . $_GET['obj'] . '&edit=' . $id_order_o
 
 // no date
                             } //hourly
-                            else {
+                            /*else {
                                 // Проверка на daily_interval
                                 if ($time_obj_cl_Exploded = explode('||', $time_obj_cl)) {
                                     $time_obj_cl_Exploded = (array)$time_obj_cl_Exploded;
@@ -618,7 +618,7 @@ document.location.href=\'index.php?obj=' . $_GET['obj'] . '&edit=' . $id_order_o
                                         }
                                     }
                                 }
-                            }
+                            }*/
 //===/date
 
 
@@ -774,33 +774,90 @@ document.location.href=\'index.php?obj=' . $_GET['obj'] . '&edit=' . $id_order_o
 
                     } else {
 
+                        $ifDailyInterval = false;
 
-                        $a_time_arr_cl = explode('||', $time_obj_cl);
-                        foreach ($a_time_arr_cl as $atk_cl => $atv_cl) {
-                            $a_date_arr_cl = explode('.', $atv_cl);
-                            if (isset($a_date_arr_cl[0])) {
-                                $a_day_cl = $a_date_arr_cl[0];
-                            } else {
-                                $a_day_cl = '';
-                            }
-                            if (isset($a_date_arr_cl[1])) {
-                                $a_month_cl = $a_date_arr_cl[1];
-                            } else {
-                                $a_month_cl = '';
-                            }
-                            if (isset($a_date_arr_cl[2])) {
-                                $a_year_cl = $a_date_arr_cl[2];
-                            } else {
-                                $a_year_cl = '';
+                        if ($a_time_arr_cl = explode('||', $time_obj_cl)) {
+
+                            // Проверка на daily_interval
+                            if ($time_obj_cl_ExplodedDate = explode('-', $a_time_arr_cl[0])) {
+                                if (count($time_obj_cl_ExplodedDate) == 2) {
+                                    //echo "<script>document.location.href=index.php?obj=$_GET[obj];</script>";
+                                    $ifDailyInterval = true;
+                                }
                             }
 
-                            if ($a_day_cl >= $day_cl && $a_month_cl == $m_cl && $a_year_cl == $y_cl || $a_month_cl > $m_cl && $a_year_cl == $y_cl || $a_year_cl > $y_cl) {
-                                $actual_cl = '1';
-                            } else {
-                                $actual_cl = '0';
-                            }
+                            if ($ifDailyInterval) {
+                                // Найдем самую большую дату
+                                $biggestDate = new DateTime('2011-01-01');
+                                foreach ($a_time_arr_cl as $datePair) {
+                                    if ($coupleDates = explode('-', $datePair)) {
+                                        $tmpDate = new DateTime($coupleDates[0]);
+                                        if ($biggestDate < $tmpDate) {
+                                            $biggestDate = $tmpDate;
+                                        }
+                                        if (!empty($coupleDates[1])) {
+                                            $tmpDate = new DateTime($coupleDates[1]);
+                                            if ($biggestDate < $tmpDate) {
+                                                $biggestDate = $tmpDate;
+                                            }
+                                        }
+                                    }
+                                }
 
-                        } //count time
+                                $a_date_arr_cl[0] = $biggestDate->format('d');//day
+                                $a_date_arr_cl[1] = $biggestDate->format('m');//month
+                                $a_date_arr_cl[2] = $biggestDate->format('Y');//year
+
+                                if (isset($a_date_arr_cl[0])) {
+                                    $a_day_cl = $a_date_arr_cl[0];
+                                } else {
+                                    $a_day_cl = '';
+                                }
+                                if (isset($a_date_arr_cl[1])) {
+                                    $a_month_cl = $a_date_arr_cl[1];
+                                } else {
+                                    $a_month_cl = '';
+                                }
+                                if (isset($a_date_arr_cl[2])) {
+                                    $a_year_cl = $a_date_arr_cl[2];
+                                } else {
+                                    $a_year_cl = '';
+                                }
+
+                                if ($a_day_cl >= $day_cl && $a_month_cl == $m_cl && $a_year_cl == $y_cl || $a_month_cl > $m_cl && $a_year_cl == $y_cl || $a_year_cl > $y_cl) {
+                                    $actual_cl = '1';
+                                } else {
+                                    $actual_cl = '0';
+                                }
+
+                            } else {
+                                foreach ($a_time_arr_cl as $atk_cl => $atv_cl) {
+                                    $a_date_arr_cl = explode('.', $atv_cl);
+                                    if (isset($a_date_arr_cl[0])) {
+                                        $a_day_cl = $a_date_arr_cl[0];
+                                    } else {
+                                        $a_day_cl = '';
+                                    }
+                                    if (isset($a_date_arr_cl[1])) {
+                                        $a_month_cl = $a_date_arr_cl[1];
+                                    } else {
+                                        $a_month_cl = '';
+                                    }
+                                    if (isset($a_date_arr_cl[2])) {
+                                        $a_year_cl = $a_date_arr_cl[2];
+                                    } else {
+                                        $a_year_cl = '';
+                                    }
+
+                                    if ($a_day_cl >= $day_cl && $a_month_cl == $m_cl && $a_year_cl == $y_cl || $a_month_cl > $m_cl && $a_year_cl == $y_cl || $a_year_cl > $y_cl) {
+                                        $actual_cl = '1';
+                                    } else {
+                                        $actual_cl = '0';
+                                    }
+
+                                } //count time
+                            }
+                        }
                     }// date 0
 
 
