@@ -142,6 +142,88 @@ class interval
         return $s;
     }
 
+    public static function priceScript($show = true)
+    {
+        //global $count_spots, $sel_s_price, $lang;
+        global $daily_price_obj, $lang;
+
+        if (!$daysOrdered = self::getTotalDays($_GET)) {
+            return '';
+        }
+
+        /*$s = 'function count_spots_price() {';
+        if ($count_spots == '1') {
+            if ($sel_s_price != '-') {
+                $s .= '
+                    var cspots = document.getElementById("inp_spots").value;
+	                var summ = parseFloat(' . $sel_s_price . ' * cspots * ' . $daysOrdered . ');
+	            	summ = Math.round(summ * 100) / 100;
+	                $("#total").html(summ);';
+            } else {
+                $s .= '$("#total").html("' . $lang['price_variable'] . '");' . "\n";
+            }
+        } else {
+            if ($sel_s_price != '-') {
+                $s .= "$('#total').html($sel_s_price * $daysOrdered);\n";
+            } else {
+                $s .= '$("$total").html("' . $lang['price_variable'] . '");' . "\n";
+            }
+        }
+        $s .= "}\n\n";
+
+        $s = '$(document).ready(function() {count_spots_price();});' . "\n"
+            . '$("#p_info").addClass("fadeIn_price");' . "\n";*/
+
+        $s = <<<HTML
+    jQuery(function($){
+        function count_spots_price() {
+            var cspots = $("#inp_spots").length > 0 ? $("#inp_spots").val() : 1;
+            var summ = parseFloat($daily_price_obj * cspots * $daysOrdered);
+
+            summ = Math.round(summ * 100) / 100;
+            document.getElementById("total").innerHTML = summ;
+         }
+         count_spots_price();
+         $("#p_info").addClass("fadeIn_price");
+	});
+HTML;
+
+        if ($show) {
+            echo $s;
+        }
+        return $s;
+    }
+
+    /**
+     * Общее количество заказанных дней
+     */
+    public static function getTotalDays($intervals)
+    {
+        $daysTotal = 0;
+
+        foreach ($intervals['f_day'] as $key => $value) {
+            if (empty($intervals['l_day'][$key])) {
+                $daysTotal += 1;
+            } else {
+                $dataFirst['day'] = $intervals['f_day'][$key];
+                $dataFirst['month'] = $intervals['f_month'][$key];
+                $dataFirst['year'] = $intervals['f_year'][$key];
+                $dataLast['day'] = $intervals['l_day'][$key];
+                $dataLast['month'] = $intervals['l_month'][$key];
+                $dataLast['year'] = $intervals['l_year'][$key];
+                self::orderDatas($dataFirst, $dataLast);
+
+                $dtFirst = new DateTime("$dataFirst[year]-$dataFirst[month]-$dataFirst[day]");
+                $dtLast = new DateTime("$dataLast[year]-$dataLast[month]-$dataLast[day]");
+                $dtDiff = $dtFirst->diff($dtLast);
+                $dtDiff->format('%R'); // use for point out relation: smaller/greater
+                $daysTotal += $dtDiff->days;
+            }
+        }
+
+        return $daysTotal;
+    }
+
     /**
      * @param $id
      * @param bool|true $show
@@ -280,13 +362,12 @@ HTML;*/
                 $cIntervals['f_year'][$key] = $intervals['f_year'][$key];
                 $cIntervals['l_day'][$key] = $intervals['l_day'][$key];
                 $cIntervals['l_month'][$key] = $intervals['l_month'][$key];
-                $cIntervals['l_year'][$key]= $intervals['l_year'][$key];
+                $cIntervals['l_year'][$key] = $intervals['l_year'][$key];
             }
         }
 
         return $cIntervals;
     }
-
 
     public static function orderDatas(&$dataFirst, &$dataLast)
     {

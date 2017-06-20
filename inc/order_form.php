@@ -1,4 +1,6 @@
 <?php
+require_once 'interval.class.php';
+
 if (!isset($index)) {die;} ?>
 
 <div id="order_form">
@@ -1651,7 +1653,9 @@ echo 'var paym_m = document.getElementById("ag_payment_modules");';
 }
 
 //=============================Count spots total price
-if (!empty($select_time_spots) && $end_spots != '1') {
+if ($provide_obj == 'daily_interval') {
+	interval::priceScript();
+} elseif (!empty($select_time_spots) && $end_spots != '1') {
 
 echo 'function count_spots_price() {
 var cspots = document.getElementById("inp_spots").value;';
