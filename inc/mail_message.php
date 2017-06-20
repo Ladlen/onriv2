@@ -1,5 +1,7 @@
 <?php
-if (!isset($index)) {die;} 
+require_once 'interval.class.php';
+
+if (!isset($index)) {die;}
 
 if (!isset($color1) || isset($color1) && empty($color1)) {$color1 = '#FC8F1A';}
 /////////////////////////////////////////////////////////////////////////
@@ -14,7 +16,7 @@ $id = $replace_id_order;
 }
 
 
-if($provide_obj == 'daily') { //===========================================DAILY
+if($provide_obj == 'daily' || $provide_obj == 'daily_interval') { //===========================================DAILY
 	
 $mess = '<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head><body style="font-family: Arial, Verdana, Tahoma; color:#000; background:#fff;">';
 
@@ -45,19 +47,30 @@ if (!empty($name_cat_done)) {$mess .= '<br /><small>'.$name_cat_done.'</small>';
 $mess .= '</td></tr>';
 
 
-
-$mess .= '<tr> <td style="border: #fff 1px solid; background:#f3f3f5; padding:14px; color:#000; vertical-align:top;">'.$lang['booking_dates'].':</td> <td style="border: #fff 1px solid; background:#f3f3f5; padding:14px; color:#000; vertical-align:top;">'; 
-$b_day = '';
-$b_month = '0';
-$b_year = '';
-foreach ($select_time_arr as $bk => $bv) {
-$bv_arr = explode('.', $bv);
-if (isset($bv_arr[0])) {$b_day = $bv_arr[0];}
-if (isset($bv_arr[1])) {$b_month = $bv_arr[1];}
-if (isset($bv_arr[2])) {$b_year = $bv_arr[2];}
-$mess .= '<li>'.$b_day.' '.$lang_monts_r[$b_month].' '.$b_year.'</li>';
-}	
-$mess .='</td></tr>';
+if($provide_obj == 'daily_interval') {
+    $mess .= '<tr><td style="border: #fff 1px solid; background:#f3f3f5; padding:14px; color:#000; vertical-align:top;">' . $lang['booking_intervals'] . ':</td> <td style="border: #fff 1px solid; background:#f3f3f5; padding:14px; color:#000; vertical-align:top;">';
+    $mess .= interval::intervalUlList($_GET, false);
+    $mess .= '</td></tr>';
+} else {
+    $mess .= '<tr> <td style="border: #fff 1px solid; background:#f3f3f5; padding:14px; color:#000; vertical-align:top;">' . $lang['booking_dates'] . ':</td> <td style="border: #fff 1px solid; background:#f3f3f5; padding:14px; color:#000; vertical-align:top;">';
+    $b_day = '';
+    $b_month = '0';
+    $b_year = '';
+    foreach ($select_time_arr as $bk => $bv) {
+        $bv_arr = explode('.', $bv);
+        if (isset($bv_arr[0])) {
+            $b_day = $bv_arr[0];
+        }
+        if (isset($bv_arr[1])) {
+            $b_month = $bv_arr[1];
+        }
+        if (isset($bv_arr[2])) {
+            $b_year = $bv_arr[2];
+        }
+        $mess .= '<li>' . $b_day . ' ' . $lang_monts_r[$b_month] . ' ' . $b_year . '</li>';
+    }
+    $mess .= '</td></tr>';
+}
 
 if(!empty($add_mail)) {
 $mess .= '<tr> <td style="border: #fff 1px solid; background:#f3f3f5; padding:14px; color:#000; vertical-align:top;">'.$lang['mail'].':</td> <td style="border: #fff 1px solid; background:#f3f3f5; padding:14px; color:#000; vertical-align:top;">'.$add_mail.'</td></tr>';}

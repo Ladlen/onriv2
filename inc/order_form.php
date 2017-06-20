@@ -513,7 +513,7 @@ echo '</td></tr>';
 
 if($provide_obj == 'daily_interval') {
 	echo '<tr><th>'.$lang['booking_intervals'].':</th><td>'
-		. interval::intervalUlList($_GET)
+		. interval::intervalUlList($_GET, false)
 		. '</td></tr>';
 } else {
 	echo '<tr><th>'.$lang['booking_dates'].':</th><td>';
